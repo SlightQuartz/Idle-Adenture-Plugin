@@ -4,12 +4,12 @@ var heroNames = [];
 var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, roundL: 0, roundD: 0,turns:[]};
 
 $(document).ready(function () {
-    Main();
+    //Main();
     basicInfo.startTime = new Date();
     $(".basicInfo li>span").eq(0).html(basicInfo.startTime.toUTCString());
 });
 
-
+/*
 function Main() {
     $.getJSON("../fightlog.json", function (data) {
         if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
@@ -21,7 +21,7 @@ function Main() {
     //setTimeout("Main()", 10000); //读取频率
 }
 //*/
-/*
+
 function Main(data) {
     jsonData = JSON.parse(data);
     basicInfo.endTime = new Date();
