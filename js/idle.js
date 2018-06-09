@@ -125,7 +125,7 @@ function LogCal(logData) {
                 SkillGroup(FindAuraUser(this.skn, logData, this.rds), this.skn, 0, 0, 0, 0, this.d == null ? 0 : Number(this.d), this.heal == null ? 0 : Number(this.heal), 0);
             }
         });
-        SkillGroup(logData.att_combat.atn, logData.att_combat.ats, logData.att_combat.d + logData.att_combat.hpf, logData.att_combat.Heal + logData.att_combat.hpf + logData.att_combat.phe, aoeD, aoeH,0,0 ,1);
+        SkillGroup(logData.att_combat.atn, logData.att_combat.ats, Number(logData.att_combat.d) + Number(logData.att_combat.hpf), Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf) + Number(logData.att_combat.phe), aoeD, aoeH,0,0 ,1);
     }
 }
 
