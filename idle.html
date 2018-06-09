@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Idle plug-in</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/idle.css" rel="stylesheet">
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand">Idle plug-in</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Fight</a></li>
+                    <!--
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Characters <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">Hero 1</a></li>
+                        <li><a href="#">Hero 2</a></li>
+                        <li><a href="#">Hero 3</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Hero 4</a></li>
+                        <li><a href="#">Hero 5</a></li>
+                        <li><a href="#">Hero 6</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Hero 7</a></li>
+                        <li><a href="#">Hero 8</a></li>
+                        <li><a href="#">Hero 9</a></li>
+                      </ul>
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Basic Info
+                        <button type="button" class="btn btn-danger btn-xs" onclick="location.reload();">Reset</button>
+                    </div>
+                    <div class="panel-body">
+                        项目地址：
+                    </div>
+                    <ul class="list-group basicInfo">
+                        <li class="list-group-item">Start time<span>12:00</span></li>
+                        <li class="list-group-item">End time<span>12:00</span></li>
+                        <li class="list-group-item">Elapsed time<span>12:00</span></li>
+                        <li class="list-group-item">Gain EXP<span>12:00</span></li>
+                        <li class="list-group-item">Gain Gold<span>12:00</span></li>
+                        <!--<li class="list-group-item">Rounds<span>0(0/0/0)</span></li>-->
+                        <li class="list-group-item">Average Turn<span>12:00</span></li>
+                        <!--<li class="list-group-item">Rest<span>0</span></li>-->
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-xs-12 col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">EXP Info</div>
+                    <div class="panel-body" style="padding-bottom:0px;">
+                        <div id="expChart" style="height: 311px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row summary">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Summary</div>
+                    <div class="panel-body">
+                        <div id="CharactersChart" style="height: 300px"></div>
+                    </div>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Hero Name</th>
+                                <th>Dmg</th>
+                                <th>Heal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row hero">
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">Hero Name</div>
+                    <table class="table table-condensed skillTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Skill Name</th>
+                                <th>Dmg</th>
+                                <th>Dmg.A</th>
+                                <th>Dmg(aoe)</th>
+                                <th>Dmg(dot)</th>
+                                <th>Heal</th>
+                                <th>Heal.A</th>
+                                <th>Heal(aoe)</th>
+                                <th>Heal(dot)</th>
+                                <th>Chart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td class="skillChart" rowspan="999">
+                                    <div style="height:100%;"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row hero">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Hero Name</div>
+                    <table class="table table-condensed skillTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Skill Name</th>
+                                <th>Dmg</th>
+                                <th>Dmg.A</th>
+                                <th>Dmg(aoe)</th>
+                                <th>Dmg(dot)</th>
+                                <th>Heal</th>
+                                <th>Heal.A</th>
+                                <th>Heal(aoe)</th>
+                                <th>Heal(dot)</th>
+                                <th>Chart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td class="skillChart" rowspan="999">
+                                    <div style="height:100%;"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row hero">
+            <div class="col-md-12">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">Hero Name</div>
+                    <table class="table table-condensed skillTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Skill Name</th>
+                                <th>Dmg</th>
+                                <th>Dmg.A</th>
+                                <th>Dmg(aoe)</th>
+                                <th>Dmg(dot)</th>
+                                <th>Heal</th>
+                                <th>Heal.A</th>
+                                <th>Heal(aoe)</th>
+                                <th>Heal(dot)</th>
+                                <th>Chart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td class="skillChart" rowspan="999">
+                                    <div style="height:100%;"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jsonValue"></div>
+    <script src="js/jquery 1.12.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/echarts.common.min.js"></script>
+    <script src="js/idle.js"></script>
+    <script src="js/echart.js"></script>
+</body>
+</html>

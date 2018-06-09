@@ -1,0 +1,23 @@
+﻿.panel-heading button{
+	float:right;
+}
+.panel ul li span{
+	display:inline-block;
+	float:right;
+}
+.hero{
+	display:none;
+}
+.hero.active{
+	display:block;
+}
+.hero td,.hero th{
+	padding-top:10px !important;
+	padding-bottom:10px !important;
+	height:40px;
+}
+.skillChart {
+	width:40%;
+	padding:0;
+	position:relative;
+}
