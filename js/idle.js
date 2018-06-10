@@ -6,34 +6,15 @@ var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, ro
 $(document).ready(function () {
     //Main();
     basicInfo.startTime = new Date();
-    $(".basicInfo li>span").eq(0).html(basicInfo.startTime.toUTCString());
+    $(".basicInfo li>span").eq(0).html([basicInfo.startTime.getFullYear(), basicInfo.startTime.getMonth() + 1, basicInfo.startTime.getDate()].join('-')
+        + ' ' + [basicInfo.startTime.getHours(), basicInfo.startTime.getMinutes(), basicInfo.startTime.getSeconds()].join(':'));
 });
-
-/*
-function Main() {
-    $.getJSON("../fightlog.json", function (data) {
-        if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
-            jsonData = data;
-            basicInfo.endTime = new Date();
-            ResetAll();
-        }
-    });
-    //setTimeout("Main()", 10000); //读取频率
-}
-//*/
-
-function Main(data) {
-    jsonData = JSON.parse(data);
-    basicInfo.endTime = new Date();
-    ResetAll();
-}
-//*/
 
 function SetExpChart(expValue,goldValue){
 	option_exp.xAxis.data.push(option_exp.xAxis.data.length);
 	option_exp.series[0].data.push(expValue);
 	option_exp.series[1].data.push(goldValue);
-	Echart_build(option_exp,expChart);
+    Echart_build(option_exp, $("#expChart"));
 }
 
 var charactersArray = [
@@ -60,15 +41,13 @@ function SetCharacters(){
 		option_characters.series[0].data.push(this.dmg);
         option_characters.series[1].data.push(this.heal);
     });
-
-    $("#CharactersChart").empty();
-    $("#CharactersChart").removeAttr("_echarts_instance_");
-    var charactersChart = echarts.init($("#CharactersChart")[0]);
-    Echart_build(option_characters, charactersChart);
+    
+    Echart_build(option_characters, $("#CharactersChart"));
 }
 
 
 function ResetAll() {
+    basicInfo.endTime = new Date();
     BasicBoard();
     SetExpChart(jsonData.geff.e, jsonData.geff.g);
     LogsCal();
@@ -77,7 +56,8 @@ function ResetAll() {
 }
 
 function BasicBoard() {
-    $(".basicInfo li>span").eq(1).html(basicInfo.endTime.toUTCString());
+    $(".basicInfo li>span").eq(1).html([basicInfo.endTime.getFullYear(), basicInfo.endTime.getMonth() + 1, basicInfo.endTime.getDate()].join('-')
+        + ' ' + [basicInfo.endTime.getHours(), basicInfo.endTime.getMinutes(), basicInfo.endTime.getSeconds()].join(':'));
     $(".basicInfo li>span").eq(2).html(Math.round((basicInfo.endTime - basicInfo.startTime) / 60000) + "mins");
     $.each(jsonData.end.grpchara, function (index, value) {
         basicInfo.exp += Number(value.exp);
@@ -87,7 +67,7 @@ function BasicBoard() {
     $(".basicInfo li>span").eq(4).html(basicInfo.gold);
     basicInfo.turns.push(jsonData.log.length);
     /*5*/
-    $(".basicInfo li>span").eq(6).html(Math.round(basicInfo.turns.reduce((acc, val) => acc + val, 0) / basicInfo.turns.length));
+    $(".basicInfo li>span").eq(5).html(Math.round(basicInfo.turns.reduce((acc, val) => acc + val, 0) / basicInfo.turns.length));
     /*7*/
 }
 
@@ -125,7 +105,8 @@ function LogCal(logData) {
                 SkillGroup(FindAuraUser(this.skn, logData, this.rds), this.skn, 0, 0, 0, 0, this.d == null ? 0 : Number(this.d), this.heal == null ? 0 : Number(this.heal), 0);
             }
         });
-        SkillGroup(logData.att_combat.atn, logData.att_combat.ats, Number(logData.att_combat.d) + Number(logData.att_combat.hpf), Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf) + Number(logData.att_combat.phe), aoeD, aoeH,0,0 ,1);
+        //+ Number(logData.att_combat.ct)/*反击*/ + Number(logData.att_combat.dbk)/*反弹*/
+        SkillGroup(logData.att_combat.atn, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/ , Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH,0,0 ,1);
     }
 }
 
