@@ -86,6 +86,7 @@ function LogsCal() {
 }
 
 function LogCal(logData) {
+	//己方回合
     if (heroNames.indexOf(logData.att_combat.atn) >= 0) {
         var aoeD = 0;
         var aoeH = 0;
@@ -124,6 +125,18 @@ function LogCal(logData) {
         //+ Number(logData.att_combat.ct)/*反击*/ + Number(logData.att_combat.dbk)/*反弹*/
         SkillGroup(logData.att_combat.atn, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/ , Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH,0,0 ,1);
     }
+	//敌方回合
+	if (heroNames.indexOf(logData.att_combat.dfn) >= 0) {
+		if(Number(logData.att_combat.ct) > 0){ 
+		  if(Number(logData.att_combat.cnt) >1){
+			for(var cntcount=0;cntcount<logData.att_combat.cnt;cntcount++){ SkillGroup(logData.att_combat.dfn,"反击",Math.round(Number(logData.att_combat.ct)/logData.att_combat.cnt),0,0,0,0,0,0);}
+		  }
+		  else{
+		    SkillGroup(logData.att_combat.dfn,"反击",Number(logData.att_combat.ct),0,0,0,0,0,0); 
+		  }
+		}
+		if(Number(logData.att_combat.dbk) > 0){ SkillGroup(logData.att_combat.dfn,"反弹",Number(logData.att_combat.dbk),0,0,0,0,0,0); }
+	}
 }
 
 function SkillGroup(heroName, skillName, Dmg, Heal, AOED, AOEH, DotD, DotH, Count) {
