@@ -109,7 +109,7 @@ function LogCal(logData) {
             var roundH = 0;
             if (this.dmg != null) { roundD += Number(this.dmg) }
             if (this.dyd != null) { roundD += Number(this.dyd) * logData.att_round.length }//改变
-            if (this.heal != null) { roundH += Number(this.dmg) }
+            if (this.heal != null) { roundH += Number(this.heal) }
             SkillGroup(logData.att_combat.atn, this.skn, 0, 0, 0, 0, roundD, roundH, 0);
         });
         $(logData.att_aura).each(function () {
