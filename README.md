@@ -1,5 +1,8 @@
 # Idle-Adenture-Plugin
 
+
+2018.6.10 update
+
 ***放置到：SteamLibrary\steamapps\common\Idle Adventure\Plugin\dps  目录下***  
 目前有众多的bug，如有问题，最好推到issues上  
 欢迎各位大佬帮忙完善插件  
@@ -7,9 +10,11 @@
 2018.6.10 update  
 欢迎大家一起更新  
 **更新内容：**  
-1.统计js改为线上，不用每次手动更新  
-2.修bug，样式修正  
-3.添加骗star  
+1.修正赤焰之心与赤焰之心II的special效果，统计归类到Dmg(dot)分类  
+(感谢AuroraYu的帮助)  
+2.统计js改为线上，不用每次手动更新  
+3.修bug，样式修正  
+4.添加骗star  
 **已知问题:**  
 1.改变，未统计（稍等）  
 2.创伤等地方回合的dot未统计  

@@ -89,9 +89,20 @@ function LogCal(logData) {
     if (heroNames.indexOf(logData.att_combat.atn) >= 0) {
         var aoeD = 0;
         var aoeH = 0;
+		var BS2 = 0; //炽热之星2判定
+		$(logData.att_spec).each(function () {
+			if(this.skn == "炽焰之星"){ SkillGroup(logData.att_combat.atn,"炽焰之星",0,0,0,0,Number(this.dmg),0,0);}
+			if(this.skn == "炽焰之星II"){ BS2 = Number(this.admg);}
+		});
         $(logData.aoe_combat).each(function () {
-            if (this.d != null) { aoeD += Number(this.d)}
-            if (this.Heal != null) { aoeH += Number(this.Heal) }
+			if(BS2 != 0){
+				if(Number(this.d) == BS2) { SkillGroup(logData.att_combat.atn,"炽焰之星II",0,0,0,0,BS2,0,0); }
+				else {aoeD += Number(this.d);}
+			}
+			else{
+				if (this.d != null) { aoeD += Number(this.d);}
+			}
+			if (this.Heal != null) { aoeH += Number(this.Heal); }
         });
         $(logData.att_round).each(function () {
             SkillGroup(FindAuraUser(this.skn, logData, this.rds), this.skn, 0, 0, 0, 0, this.dmg == null ? 0 : Number(this.dmg), this.heal == null ? 0 : Number(this.heal), 0);
