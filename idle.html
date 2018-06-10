@@ -50,16 +50,17 @@
                         <button type="button" class="btn btn-danger btn-xs" onclick="location.reload();">Reset</button>
                     </div>
                     <div class="panel-body">
-                        项目地址：
+                        项目地址：<a href="https://github.com/SlightQuartz/Idle-Adenture-Plugin">GitHub</a>，求Star
+
                     </div>
                     <ul class="list-group basicInfo">
-                        <li class="list-group-item">Start time<span>12:00</span></li>
-                        <li class="list-group-item">End time<span>12:00</span></li>
-                        <li class="list-group-item">Elapsed time<span>12:00</span></li>
-                        <li class="list-group-item">Gain EXP<span>12:00</span></li>
-                        <li class="list-group-item">Gain Gold<span>12:00</span></li>
+                        <li class="list-group-item">Start time<span>null</span></li>
+                        <li class="list-group-item">End time<span>null</span></li>
+                        <li class="list-group-item">Elapsed time<span>null</span></li>
+                        <li class="list-group-item">Gain EXP<span>null</span></li>
+                        <li class="list-group-item">Gain Gold<span>null</span></li>
                         <!--<li class="list-group-item">Rounds<span>0(0/0/0)</span></li>-->
-                        <li class="list-group-item">Average Turn<span>12:00</span></li>
+                        <li class="list-group-item">Average Turn<span>null</span></li>
                         <!--<li class="list-group-item">Rest<span>0</span></li>-->
                     </ul>
                 </div>
@@ -69,7 +70,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">EXP Info</div>
                     <div class="panel-body" style="padding-bottom:0px;">
-                        <div id="expChart" style="height: 311px"></div>
+                        <div id="expChart" style="height: 281px"></div>
                     </div>
                 </div>
             </div>
@@ -90,8 +91,7 @@
                                 <th>Heal</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -105,14 +105,14 @@
                             <tr>
                                 <th>#</th>
                                 <th>Skill Name</th>
-                                <th>Dmg</th>
-                                <th>Dmg.A</th>
-                                <th>Dmg(aoe)</th>
-                                <th>Dmg(dot)</th>
-                                <th>Heal</th>
-                                <th>Heal.A</th>
-                                <th>Heal(aoe)</th>
-                                <th>Heal(dot)</th>
+                                <th>D</th>
+                                <th>D.A</th>
+                                <th>D.aoe</th>
+                                <th>D.dot</th>
+                                <th>H</th>
+                                <th>H.A</th>
+                                <th>H.aoe</th>
+                                <th>H.dot</th>
                                 <th>Chart</th>
                             </tr>
                         </thead>
@@ -146,14 +146,14 @@
                             <tr>
                                 <th>#</th>
                                 <th>Skill Name</th>
-                                <th>Dmg</th>
-                                <th>Dmg.A</th>
-                                <th>Dmg(aoe)</th>
-                                <th>Dmg(dot)</th>
-                                <th>Heal</th>
-                                <th>Heal.A</th>
-                                <th>Heal(aoe)</th>
-                                <th>Heal(dot)</th>
+                                <th>D</th>
+                                <th>D.A</th>
+                                <th>D.aoe</th>
+                                <th>D.dot</th>
+                                <th>H</th>
+                                <th>H.A</th>
+                                <th>H.aoe</th>
+                                <th>H.dot</th>
                                 <th>Chart</th>
                             </tr>
                         </thead>
@@ -187,14 +187,14 @@
                             <tr>
                                 <th>#</th>
                                 <th>Skill Name</th>
-                                <th>Dmg</th>
-                                <th>Dmg.A</th>
-                                <th>Dmg(aoe)</th>
-                                <th>Dmg(dot)</th>
-                                <th>Heal</th>
-                                <th>Heal.A</th>
-                                <th>Heal(aoe)</th>
-                                <th>Heal(dot)</th>
+                                <th>D</th>
+                                <th>D.A</th>
+                                <th>D.aoe</th>
+                                <th>D.dot</th>
+                                <th>H</th>
+                                <th>H.A</th>
+                                <th>H.aoe</th>
+                                <th>H.dot</th>
                                 <th>Chart</th>
                             </tr>
                         </thead>
@@ -224,7 +224,10 @@
     <script src="js/jquery 1.12.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/echarts.common.min.js"></script>
-    <script src="js/idle.js"></script>
-    <script src="js/echart.js"></script>
+    <!--<script src="js/echart.js"></script>-->
+    <script src="http://raw.githack.com/SlightQuartz/Idle-Adenture-Plugin/master/js/echart.js"></script>
+    <!--<script src="js/idle.js"></script>-->
+    <script src="http://raw.githack.com/SlightQuartz/Idle-Adenture-Plugin/master/js/idle.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
