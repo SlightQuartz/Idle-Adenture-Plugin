@@ -21,3 +21,6 @@
 	padding:0;
 	position:relative;
 }
+.skillChart>div {
+	min-height:225px;
+}

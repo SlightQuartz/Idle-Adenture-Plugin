@@ -1,5 +1,4 @@
-﻿var expChart = echarts.init($("#expChart")[0]);
-var option_exp = {
+﻿var option_exp = {
     tooltip: {
         trigger: 'axis'
     },
@@ -209,12 +208,14 @@ var option_skill = {
     ]
 };
 
-function Echart_build(chartOption,chart){
+function Echart_build(chartOption, $chart) {
+    $chart.empty();
+    $chart.removeAttr("_echarts_instance_");
+    var charactersChart = echarts.init($chart[0]);
 	if (chartOption && typeof chartOption === "object") {
-		chart.setOption(chartOption, true);
+        charactersChart.setOption(chartOption, true);
 	}
 }
 
 
-//Echart_build(option_characters,charactersChart);
 
