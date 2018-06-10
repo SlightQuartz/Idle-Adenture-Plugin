@@ -105,7 +105,12 @@ function LogCal(logData) {
 			if (this.Heal != null) { aoeH += Number(this.Heal); }
         });
         $(logData.att_round).each(function () {
-            SkillGroup(FindAuraUser(this.skn, logData, this.rds), this.skn, 0, 0, 0, 0, this.dmg == null ? 0 : Number(this.dmg), this.heal == null ? 0 : Number(this.heal), 0);
+            var roundD = 0;
+            var roundH = 0;
+            if (this.dmg != null) { roundD += Number(this.dmg) }
+            if (this.dyd != null) { roundD += Number(this.dyd) * logData.att_round.length }//改变
+            if (this.heal != null) { roundH += Number(this.dmg) }
+            SkillGroup(logData.att_combat.atn, this.skn, 0, 0, 0, 0, roundD, roundH, 0);
         });
         $(logData.att_aura).each(function () {
             //if (this.d != null) { aoeD += Number(this.d) }
