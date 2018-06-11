@@ -90,7 +90,7 @@ function LogCal(logData) {
     if (heroNames.indexOf(logData.att_combat.atn) >= 0) {
         var aoeD = 0;
         var aoeH = 0;
-		var BS2 = 0; //炽热之星2判定
+		var BS2 = 0; //炽焰之星2判定
 		$(logData.att_spec).each(function () {
 			if(this.skn == "炽焰之星"){ SkillGroup(logData.att_combat.atn,"炽焰之星",0,0,0,0,Number(this.dmg),0,0);}
 			if(this.skn == "炽焰之星II"){ BS2 = Number(this.admg);}
@@ -136,6 +136,88 @@ function LogCal(logData) {
 		  }
 		}
 		if(Number(logData.att_combat.dbk) > 0){ SkillGroup(logData.att_combat.dfn,"反弹",Number(logData.att_combat.dbk),0,0,0,0,0,0); }
+		//毒伤统计
+        var PoisonSpitList = [];
+        var PoisonList1 = [];
+        var PoisonList2 = [];
+        var PoisonList3 = [];
+        var PoisonList4 = [];
+        //var PoisonList5 = [];
+        if(logData.att_poison!= null) {
+
+		    for(var i =0;i<logData.att_poison.length;i++){
+		        switch (logData.att_poison[i].skn) {
+                    case "毒雾喷射":
+                        //生成每回合毒喷的伤害与轮数列表
+                        PoisonSpitList.push([logData.att_poison[i].psd, logData.att_poison[i].rds]);
+                        break;
+                    case "毒牙":
+                        PoisonList1.push([logData.att_poison[i].psd, logData.att_poison[i].rds]);
+                        break;
+
+                    case "异域毒刃":
+                        PoisonList2.push([logData.att_poison[i].psd, logData.att_poison[i].rds]);
+                        break;
+
+                    case "空虚":
+                        PoisonList3.push([logData.att_poison[i].psd, logData.att_poison[i].rds]);
+                        break;
+
+                    case "瘟疫之触":
+                        PoisonList4.push([logData.att_poison[i].psd, logData.att_poison[i].rds]);
+                        break;
+                }
+            }
+                //毒喷伤害统计
+            if (PoisonSpitList.length >0 ) {
+                //生成50t内使用过毒喷的英雄列表
+                var PoisonSpitUserList = FindPoisonSpitUser(logData, "毒雾喷射");
+                for (var ia = 0; ia < PoisonSpitList.length; ia++) {
+                    //时间最长的毒喷归属于最近使用毒喷技能的英雄，按顺序一一对应
+                    SkillGroup(PoisonSpitUserList[ia][0], "毒雾喷射", 0, 0, 0, 0, Number(PoisonSpitList[PoisonSpitList.length - 1 - ia][0]), 0, 0)
+                }
+            }
+                //毒牙伤害统计
+            if (PoisonList1.length >0 ) {
+                var FangUserList = FindSkillUser(logData, "毒牙");
+                for (var ib = 0; ib < PoisonList1.length; ib++) {
+                    SkillGroup(FangUserList[ib][0], "毒牙", 0, 0, 0, 0, Number(PoisonList1[PoisonList1.length - 1 - ib][0]), 0, 0)
+                }
+            }
+            //异域伤害统计
+            if (PoisonList2.length >0 ) {
+                var ExoticBladeUserList = FindSkillUser(logData, "异域毒刃");
+                for (var ic = 0; ic < PoisonList2.length; ic++) {
+                    SkillGroup(ExoticBladeUserList[ic][0], "异域毒刃", 0, 0, 0, 0, Number(PoisonList2[PoisonList2.length - 1 - ic][0]), 0, 0)
+                }
+            }
+            //空虚
+            if (PoisonList3.length >0 ) {
+                var VoidUserList = FindSkillUser(logData, "空虚");
+                for (var id = 0; id < PoisonList3.length; id++) {
+                    SkillGroup(VoidUserList[id][0], "空虚", 0, 0, 0, 0, Number(PoisonList3[PoisonList3.length - 1 - id][0]), 0, 0)
+                }
+            }
+            //瘟疫
+            if (PoisonList4.length >0 ) {
+                var WYUserList = FindSkillUser(logData, "瘟疫之触");
+                for (var ie = 0; ie < PoisonList4.length; ie++) {
+                    SkillGroup(WYUserList[ie][0], "瘟疫之触", 0, 0, 0, 0, Number(PoisonList4[PoisonList4.length - 1 - ie][0]), 0, 0)
+                }
+            }
+        }
+
+        //逆恶魔统计
+        if(logData.att_spec!= null) {
+            $(logData.att_spec).each(function () {
+              if(this.skn == "束缚"){
+                  var ShacklesUserList = FindSkillUser(logData, "束缚");
+                  SkillGroup(ShacklesUserList[0][0], "束缚", 0, 0, 0, 0, Number(this.rmh), 0, 0)
+
+              }
+            });
+        }
+        //无来源伤害 魅毒、创伤
 	}
 }
 
@@ -325,6 +407,40 @@ function FindAuraUser_2(auraName, logData, rds, pre_logData, callback) {
     });
     callback(preRound);
 }
+
+//生成最近使用毒喷的英雄序列
+function FindPoisonSpitUser(logData,skillname){
+    var PoisonSpitUserList = [];
+    var preRound = jsonData.log.indexOf(logData);
+    for (var i = 1; i < 50;i++) {
+        if(preRound-i < 0){break;}
+        else {
+            if (heroNames.indexOf(jsonData.log[preRound - i].att_combat.atn) >= 0 && jsonData.log[preRound - i].att_combat.ats == skillname) {
+                PoisonSpitUserList.push([jsonData.log[preRound - i].att_combat.atn, preRound - i]);
+            }
+        }
+    }
+    //返回英雄列表
+    return PoisonSpitUserList;
+}
+
+//生成最近使用某技能的序列
+function FindSkillUser(logData,skillname){
+    var SkillUserList = [];
+    var preRound = jsonData.log.indexOf(logData);
+    for (var i = 1; i < 50;i++) {
+        if(preRound-i < 0){break;}
+        else {
+            //判断条件：1.己方英雄 2.对当前目标使用过技能 3.技能名判定
+            if (heroNames.indexOf(jsonData.log[preRound - i].att_combat.atn) >= 0 && jsonData.log[preRound - i].didx == logData.aidx && jsonData.log[preRound - i].att_combat.ats == skillname) {
+                SkillUserList.push([jsonData.log[preRound - i].att_combat.atn, preRound - i]);
+            }
+        }
+    }
+    //返回英雄列表
+    return SkillUserList;
+}
+
 function SummaryBoard() {
     $(charactersArray).each(function () {
         $(".summary tbody").empty();
