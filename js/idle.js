@@ -1,9 +1,9 @@
 ﻿var jsonData = null;
 var skillGroup = [[], [], []];
 var heroNames = [];
-
 var heroNamesList = [];
 var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, roundL: 0, roundD: 0, turns: [] };
+
 
 $(document).ready(function () {
     //Main();
