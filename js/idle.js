@@ -1,6 +1,8 @@
 ﻿var jsonData = null;
 var skillGroup = [[], [], []];
 var heroNames = [];
+
+var heroNamesList = [];
 var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, roundL: 0, roundD: 0, turns: [] };
 
 $(document).ready(function () {
@@ -94,6 +96,7 @@ function LogsCal() {
     if (heroNames.length == 0) {
         $.each(jsonData.myc, function (index, value) {
             heroNames.push(value.nam);
+            heroNamesList.push([value.idx,value.nam]);
             charactersArray[index].name = value.nam;
             $(".hero").eq(index).addClass("active");
             $(".hero").eq(index).find(".panel-heading").html(value.nam);
@@ -109,8 +112,11 @@ function LogsCal() {
 /// </summary>
 /// <param name="logData">单个log对象</param>
 function LogCal(logData) {
-    //己方回合
-    if (heroNames.indexOf(logData.att_combat.atn) >= 0) {
+
+	//己方回合
+    //根据idx判断，避免与怪物重名
+    if (logData.aidx == heroNamesList[0][0] || logData.aidx == heroNamesList[1][0] || logData.aidx == heroNamesList[2][0]) {
+        debugger;
         var aoeD = 0;
         var aoeH = 0;
         var BS2 = 0; //炽热之星2判定
@@ -149,7 +155,8 @@ function LogCal(logData) {
         SkillGroup(logData.att_combat.atn, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/, Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH, 0, 0, 1);
     }
 	//敌方回合
-	if (heroNames.indexOf(logData.att_combat.dfn) >= 0) {
+    //
+	if (logData.didx == heroNamesList[0][0] || logData.didx == heroNamesList[1][0] || logData.didx == heroNamesList[2][0]) {
 		if(Number(logData.att_combat.ct) > 0){ 
 		  if(Number(logData.att_combat.cnt) >1){
 			for(var cntcount=0;cntcount<logData.att_combat.cnt;cntcount++){ SkillGroup(logData.att_combat.dfn,"反击",Math.round(Number(logData.att_combat.ct)/logData.att_combat.cnt),0,0,0,0,0,0);}
