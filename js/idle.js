@@ -1,51 +1,64 @@
 ﻿var jsonData = null;
 var skillGroup = [[], [], []];
 var heroNames = [];
-var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, roundL: 0, roundD: 0,turns:[]};
+var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, roundL: 0, roundD: 0, turns: [] };
 
 $(document).ready(function () {
-    //Main();
+    Main();
     basicInfo.startTime = new Date();
     $(".basicInfo li>span").eq(0).html([basicInfo.startTime.getFullYear(), basicInfo.startTime.getMonth() + 1, basicInfo.startTime.getDate()].join('-')
         + ' ' + [basicInfo.startTime.getHours(), basicInfo.startTime.getMinutes(), basicInfo.startTime.getSeconds()].join(':'));
 });
 
-function SetExpChart(expValue,goldValue){
-	option_exp.xAxis.data.push(option_exp.xAxis.data.length);
-	option_exp.series[0].data.push(expValue);
-	option_exp.series[1].data.push(goldValue);
+/// <summary>
+/// 为左上exp info折线图添加一组新的数据
+/// </summary>
+/// <param name="expValue">经验数值</param>
+/// <param name="goldValue">金钱数值</param>
+function SetExpChart(expValue, goldValue) {
+    option_exp.xAxis.data.push(option_exp.xAxis.data.length);
+    option_exp.series[0].data.push(expValue);
+    option_exp.series[1].data.push(goldValue);
     Echart_build(option_exp, $("#expChart"));
 }
 
+// summary数据
 var charactersArray = [
-	{
-		name:"Hero_1",
-		dmg: 0,
-		heal: 0,
-	},{
-		name:"Hero_2",
-		dmg: 0,
-		heal: 0,
-	},{
-		name:"Hero_3",
-		dmg: 0,
-		heal: 0,
-	}];
+    {
+        name: "Hero_1",
+        dmg: 0,
+        heal: 0,
+    }, {
+        name: "Hero_2",
+        dmg: 0,
+        heal: 0,
+    }, {
+        name: "Hero_3",
+        dmg: 0,
+        heal: 0,
+    }];
 
-function SetCharacters(){
-	option_characters.yAxis[0].data = [];
-	option_characters.series[0].data = [];
-	option_characters.series[1].data = [];
-	$(charactersArray).each(function(){
-		option_characters.yAxis[0].data.push(this.name);
-		option_characters.series[0].data.push(this.dmg);
+
+/// <summary>
+/// 重设summary图标，使用charactersArray数据
+/// </summary>
+function SetCharacters() {
+    option_characters.yAxis[0].data = [];
+    option_characters.series[0].data = [];
+    option_characters.series[1].data = [];
+    $(charactersArray).each(function () {
+        option_characters.yAxis[0].data.push(this.name);
+        option_characters.series[0].data.push(this.dmg);
         option_characters.series[1].data.push(this.heal);
     });
-    
+
     Echart_build(option_characters, $("#CharactersChart"));
 }
 
 
+/// <summary>
+/// 重设所有数据和统计图，每次获得json数据后调用
+/// </summary>
 function ResetAll() {
     basicInfo.endTime = new Date();
     BasicBoard();
@@ -55,6 +68,9 @@ function ResetAll() {
     SummaryBoard();
 }
 
+/// <summary>
+/// 重设左上基本信息
+/// </summary>
 function BasicBoard() {
     $(".basicInfo li>span").eq(1).html([basicInfo.endTime.getFullYear(), basicInfo.endTime.getMonth() + 1, basicInfo.endTime.getDate()].join('-')
         + ' ' + [basicInfo.endTime.getHours(), basicInfo.endTime.getMinutes(), basicInfo.endTime.getSeconds()].join(':'));
@@ -71,9 +87,12 @@ function BasicBoard() {
     /*7*/
 }
 
+/// <summary>
+/// 分析统计战斗json中的log
+/// </summary>
 function LogsCal() {
     if (heroNames.length == 0) {
-        $.each(jsonData.myc,function (index, value) {
+        $.each(jsonData.myc, function (index, value) {
             heroNames.push(value.nam);
             charactersArray[index].name = value.nam;
             $(".hero").eq(index).addClass("active");
@@ -85,25 +104,29 @@ function LogsCal() {
     });
 }
 
+/// <summary>
+/// 分析统计单个log
+/// </summary>
+/// <param name="logData">单个log对象</param>
 function LogCal(logData) {
-	//己方回合
+    //己方回合
     if (heroNames.indexOf(logData.att_combat.atn) >= 0) {
         var aoeD = 0;
         var aoeH = 0;
-		var BS2 = 0; //炽热之星2判定
-		$(logData.att_spec).each(function () {
-			if(this.skn == "炽焰之星"){ SkillGroup(logData.att_combat.atn,"炽焰之星",0,0,0,0,Number(this.dmg),0,0);}
-			if(this.skn == "炽焰之星II"){ BS2 = Number(this.admg);}
-		});
+        var BS2 = 0; //炽热之星2判定
+        $(logData.att_spec).each(function () {
+            if (this.skn == "炽焰之星") { SkillGroup(logData.att_combat.atn, "炽焰之星", 0, 0, 0, 0, Number(this.dmg), 0, 0); }
+            if (this.skn == "炽焰之星II") { BS2 = Number(this.admg); }
+        });
         $(logData.aoe_combat).each(function () {
-			if(BS2 != 0){
-				if(Number(this.d) == BS2) { SkillGroup(logData.att_combat.atn,"炽焰之星II",0,0,0,0,BS2,0,0); }
-				else {aoeD += Number(this.d);}
-			}
-			else{
-				if (this.d != null) { aoeD += Number(this.d);}
-			}
-			if (this.Heal != null) { aoeH += Number(this.Heal); }
+            if (BS2 != 0) {
+                if (Number(this.d) == BS2) { SkillGroup(logData.att_combat.atn, "炽焰之星II", 0, 0, 0, 0, BS2, 0, 0); }
+                else { aoeD += Number(this.d); }
+            }
+            else {
+                if (this.d != null) { aoeD += Number(this.d); }
+            }
+            if (this.Heal != null) { aoeH += Number(this.Heal); }
         });
         $(logData.att_round).each(function () {
             var roundD = 0;
@@ -123,22 +146,40 @@ function LogCal(logData) {
             }
         });
         //+ Number(logData.att_combat.ct)/*反击*/ + Number(logData.att_combat.dbk)/*反弹*/
-        SkillGroup(logData.att_combat.atn, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/ , Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH,0,0 ,1);
+        SkillGroup(logData.att_combat.atn, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/, Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH, 0, 0, 1);
     }
-	//敌方回合
-	if (heroNames.indexOf(logData.att_combat.dfn) >= 0) {
-		if(Number(logData.att_combat.ct) > 0){ 
-		  if(Number(logData.att_combat.cnt) >1){
-			for(var cntcount=0;cntcount<logData.att_combat.cnt;cntcount++){ SkillGroup(logData.att_combat.dfn,"反击",Math.round(Number(logData.att_combat.ct)/logData.att_combat.cnt),0,0,0,0,0,0);}
-		  }
-		  else{
-		    SkillGroup(logData.att_combat.dfn,"反击",Number(logData.att_combat.ct),0,0,0,0,0,0); 
-		  }
-		}
-		if(Number(logData.att_combat.dbk) > 0){ SkillGroup(logData.att_combat.dfn,"反弹",Number(logData.att_combat.dbk),0,0,0,0,0,0); }
-	}
+    //敌方回合
+    if (heroNames.indexOf(logData.att_combat.dfn) >= 0) {
+        if (Number(logData.att_combat.ct) > 0) {
+            if (Number(logData.att_combat.cnt) > 1) {
+                // 均分每次反击伤害
+                for (var cntcount = 0; cntcount < logData.att_combat.cnt; cntcount++) {
+                    SkillGroup(logData.att_combat.dfn, "反击", Math.round(Number(logData.att_combat.ct) / logData.att_combat.cnt), 0, 0, 0, 0, 0, 0);
+                }
+            }
+            else {
+                SkillGroup(logData.att_combat.dfn, "反击", Number(logData.att_combat.ct), 0, 0, 0, 0, 0, 0);
+            }
+        }
+        if (Number(logData.att_combat.dbk) > 0) {
+            SkillGroup(logData.att_combat.dfn, "反弹", Number(logData.att_combat.dbk), 0, 0, 0, 0, 0, 0);
+        }
+    }
 }
 
+
+/// <summary>
+/// 将解析出来的伤害进行分组统计
+/// </summary>
+/// <param name="heroName">角色名</param>
+/// <param name="skillName">技能名</param>
+/// <param name="Dmg">直接伤害</param>
+/// <param name="Heal">直接治疗</param>
+/// <param name="AOED">aoe伤害</param>
+/// <param name="AOEH">aoe治疗</param>
+/// <param name="DotD">dot伤害</param>
+/// <param name="DotH">dot治疗</param>
+/// <param name="Count">技能使用次数</param>
 function SkillGroup(heroName, skillName, Dmg, Heal, AOED, AOEH, DotD, DotH, Count) {
     var exist = false;
     Dmg = Number(Dmg);
@@ -164,8 +205,12 @@ function SkillGroup(heroName, skillName, Dmg, Heal, AOED, AOEH, DotD, DotH, Coun
     }
 }
 
+/// <summary>
+/// 清空charactersArray数据，并重设角色技能伤害的图和表格
+/// </summary>
+/// <param name="callback">回调，防止异步执行</param>
 function SkillBoards(callback) {
-    for (var i = 0; i < 3;i++){
+    for (var i = 0; i < 3; i++) {
         charactersArray[i].dmg = 0;
         charactersArray[i].heal = 0;
     }
@@ -176,13 +221,19 @@ function SkillBoards(callback) {
     callback();
 }
 
+/// <summary>
+/// 重设单个角色技能伤害的表格
+/// </summary>
+/// <param name="$node">jq对象，角色table</param>
+/// <param name="data">该角色所有技能统计数据</param>
+/// <returns>summary图表的数据</returns>
 function SkillBoard($node, data) {
     var chartData = [];
     $.each(data, function (index, value) {
         if ($node.find("tr").length > index) {
-            chartData.push(SkillItem($node.find("tr").eq(index), value,));
+            chartData.push(SkillItem($node.find("tr").eq(index), value));
         } else {
-            var $item = $('<tr><th scope= "row">' + (index + 1) + '</th><td>Mark</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>')
+            var $item = $('<tr><th scope= "row">' + (index + 1) + '</th><td>Mark</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>');
             chartData.push(SkillItem($item, value));
             $node.append($item);
         }
@@ -190,6 +241,12 @@ function SkillBoard($node, data) {
     return chartData;
 }
 
+/// <summary>
+/// 重设单个技能条目
+/// </summary>
+/// <param name="$node">jq对象，技能tr</param>
+/// <param name="data">该技能统计数据</param>
+/// <returns>技能累加数值</returns>
 function SkillItem($item, data) {
     $item.find("td").eq(0).html(data.name);
     var dmgASum = data.Dmg.reduce((acc, val) => acc + val, 0);
@@ -244,16 +301,24 @@ function SkillItem($item, data) {
     return [data.name, dmgASum, aoeDSum, dotDSum, healASum, aoeHSum, dotHSum];
 }
 
+/// <summary>
+/// 计算数组非0元素数量
+/// </summary>
+/// <param name="array">数组</param>
+/// <returns>数量</returns>
 function CountWithoutZero(array) {
     var count = 0;
     $(array).each(function () {
-        if (this != 0){
+        if (this != 0) {
             count++;
         }
     });
     return count;
 }
 
+/// <summary>
+/// 清空charactersArray数据，并重设summary图和表格
+/// </summary>
 function SetSkillChart(index, data) {
     option_skill.yAxis.data = [];
     $(option_skill.series).each(function () {
@@ -279,15 +344,24 @@ function SetSkillChart(index, data) {
     }
 }
 
+/// <summary>
+/// 追溯光环使用者
+/// </summary>
+/// <param name="auraName">光环名</param>
+/// <param name="logData">log条目数据</param>
+/// <param name="rds">光环轮数</param>
+/// <returns>使用者</returns>
 function FindAuraUser(auraName, logData, rds) {
     var userName = null;
     var preRound = jsonData.log.indexOf(logData);
-    for (var i = 2; i < 7;i++){
-        if (jsonData.log[preRound-i].att_combat.atn == logData.att_combat.atn) {
+    // 寻找自身光环最初起效回合
+    for (var i = 2; i < 7; i++) {
+        if (jsonData.log[preRound - i].att_combat.atn == logData.att_combat.atn) {
             FindAuraUser_2(auraName, jsonData.log[preRound], rds, jsonData.log[preRound - i], function (preRds) {
                 if (preRds < 0) {
                     return;
                 } else {
+                    // 找到前一轮光环，递归查找前一轮
                     preRound -= i;
                     i = 1;
                 }
@@ -296,28 +370,39 @@ function FindAuraUser(auraName, logData, rds) {
             if (preRound - i - 1 < 0) { break; }
         }
     }
-
-    for (var i = 0; i < 6; i++){
+    // 寻找使光环起效的技能
+    for (var i = 0; i < 6; i++) {
         if (preRound - i >= 0) {
             //console.log(preRound+jsonData.log[preRound - i].att_combat.ats);
-            if (jsonData.log[preRound - i].att_combat.ats.indexOf(auraName) != -1){
+            if (jsonData.log[preRound - i].att_combat.ats.indexOf(auraName) != -1) {
                 userName = jsonData.log[preRound - i].att_combat.atn;
                 break;
             }
         }
     }
+    //找不到使用者，最初回合的角色作为使用者
     if (userName == null) {
         userName = jsonData.log[preRound].att_combat.atn;
     }
     return userName;
 }
+
+/// <summary>
+/// 找到的轮次光环持续时间，并回调
+/// </summary>
+/// <param name="auraName">光环名</param>
+/// <param name="logData">log条目数据</param>
+/// <param name="rds">光环轮数</param>
+/// <param name="pre_logData">前一轮的log</param>
+/// <param name="callback">回调</param>
+/// <returns>preRound，前一轮持续时间</returns>
 function FindAuraUser_2(auraName, logData, rds, pre_logData, callback) {
     var preRound = -1;
     $(pre_logData.att_aura).each(function () {
         if (this.skn == auraName) {
             if (this.rds > rds) {
                 preRound = this.rds;
-            } else if (this.rds == rds && logData.att_combat.ats.indexOf("炽热光辉")!=-1) {
+            } else if (this.rds == rds && logData.att_combat.ats.indexOf("炽热光辉") != -1) {
                 preRound = this.rds;
             }
             return;
@@ -325,6 +410,10 @@ function FindAuraUser_2(auraName, logData, rds, pre_logData, callback) {
     });
     callback(preRound);
 }
+
+/// <summary>
+/// 设置summary
+/// </summary>
 function SummaryBoard() {
     $(charactersArray).each(function () {
         $(".summary tbody").empty();
