@@ -1,5 +1,6 @@
 ﻿var jsonData = null;
 var skillGroup = [[], [], []];
+var hitbypoedata = [];
 var heroNames = [];
 var heroNamesList = [];
 var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, roundL: 0, roundD: 0, turns: [] };
@@ -68,6 +69,7 @@ function ResetAll() {
     LogsCal();
     SkillBoards(function () { SetCharacters() });
     SummaryBoard();
+    HitByPoeBoard();
 }
 
 /// <summary>
@@ -89,6 +91,21 @@ function BasicBoard() {
     /*7*/
 }
 
+//重设被击中次数、闪避次数以及被暴击次数
+function HitByPoeBoard() {
+    for(var i =0;i<hitbypoedata.length;i++) {
+        $(".hitbypoedata"+ Number(i+1) +" #hit").html(hitbypoedata[i][2]);
+        $(".hitbypoedata"+ Number(i+1)+" #evc").html(hitbypoedata[i][3]);
+        $(".hitbypoedata"+ Number(i+1) +" #crc").html(hitbypoedata[i][5]);
+        $(".hitbypoedata"+ Number(i+1) +" #drc").html(hitbypoedata[i][7]);
+        if(hitbypoedata[i][2] > 0) {
+            $(".hitbypoedata" + Number(i+1) + " #evr").html((hitbypoedata[i][3] / hitbypoedata[i][2]*100).toFixed(2) + "%");
+            $(".hitbypoedata" + Number(i+1) + " #crr").html((hitbypoedata[i][5] / hitbypoedata[i][2]*100).toFixed(2) + "%");
+            $(".hitbypoedata" + Number(i+1) + " #drr").html((hitbypoedata[i][7] / hitbypoedata[i][2]*100).toFixed(2) + "%");
+        }
+    }
+}
+
 /// <summary>
 /// 分析统计战斗json中的log
 /// </summary>
@@ -101,9 +118,21 @@ function LogsCal() {
             $(".hero").eq(index).addClass("active");
             $(".hero").eq(index).find(".panel-heading").html(value.nam);
         });
+        //不满3人的队伍
+        if(heroNames.length<2){heroNamesList.push([0,null]);}
+        if(heroNames.length<3){heroNamesList.push([0,null]);}
+    }
+    if(hitbypoedata.length == 0){
+        $.each(jsonData.myc, function (index, value) {
+            hitbypoedata.push([value.idx,value.nam,0,0,0,0,0,0,0])
+        });
+        //不满3人的队伍
+        if(hitbypoedata.length<2){hitbypoedata.push([0,null,0,0,0,0,0,0,0]);}
+        if(hitbypoedata.length<3){hitbypoedata.push([0,null,0,0,0,0,0,0,0]);}
     }
     $.each(jsonData.log, function (index, value) {
         LogCal(value);
+        HitByPoe(value);
     });
 }
 
@@ -545,6 +574,33 @@ function GroupPoison(logData,List,SkillName) {
     }
 }
 
+function HitByPoe(logData) {
+    if (Number(logData.didx) == hitbypoedata[0][0] || Number(logData.didx) == hitbypoedata[1][0] || Number(logData.didx) == hitbypoedata[2][0]) {
+        switch (Number(logData.didx)) {
+            case hitbypoedata[0][0]:
+                AddHitByPoeData(logData,0);
+                break;
+            case hitbypoedata[1][0]:
+                AddHitByPoeData(logData,1);
+                break;
+            case hitbypoedata[2][0]:
+                AddHitByPoeData(logData,2);
+                break;
+        }
+    }
+}
+
+function AddHitByPoeData(logData,ii) {
+    if(logData.att_combat.dfn == hitbypoedata[ii][1]){
+        //hit
+        hitbypoedata[ii][2] += Number(logData.att_combat.atc);
+        hitbypoedata[ii][3] += Number(logData.att_combat.dc);
+        hitbypoedata[ii][5] += Number(logData.att_combat.cc);
+        if(Number(logData.att_combat.atc)>0 &&Number(logData.att_combat.d)==0&&Number(logData.att_combat.dc)==0&&Number(logData.att_combat.dr)>0){
+            hitbypoedata[ii][7] += 1;
+        }
+    }
+}
 /// <summary>
 /// 设置summary
 /// </summary>

@@ -24,3 +24,15 @@
 .skillChart>div {
 	min-height:225px;
 }
+
+.hitbypoedata1 div,.hitbypoedata2 div,.hitbypoedata3 div{
+	width:20%;
+	float:left;
+	border-bottom: 1px solid #ddd;
+}
+
+.hitbypoedata1 div div,.hitbypoedata2 div div,.hitbypoedata3 div div{
+	width:auto;
+	padding: 10px 10px;
+	border-bottom: 0px;
+}
