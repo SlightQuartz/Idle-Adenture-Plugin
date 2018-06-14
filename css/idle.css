@@ -24,6 +24,7 @@
 .skillChart>div {
 	min-height:225px;
 }
+
 .hero .panel-body{
 	padding:0;
 }
@@ -32,4 +33,5 @@
 }
 .hero .panel-body tr:first-child th,.hero .panel-body tr:first-child td{
 	border-top: 0px;
+
 }
