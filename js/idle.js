@@ -300,7 +300,7 @@ function FindPoisonSpitUser(logData, skillname) {
     for (var i = 1; i < 50; i++) {
         if (preRound - i < 0) { break; }
         else {
-            if (heroList.indexOf(jsonData.log[preRound - i].aidx) >= 0 &&
+            if (heroIDList.indexOf(Number(jsonData.log[preRound - i].aidx)) >= 0 &&
                 jsonData.log[preRound - i].att_combat.ats == skillname) {
                 PoisonSpitUserList.push([jsonData.log[preRound - i].aidx, preRound - i]);
             }
@@ -318,7 +318,7 @@ function FindSkillUser(logData, skillname) {
         if (preRound - i < 0) { break; }
         else {
             //判断条件：1.己方英雄 2.对当前目标使用过技能 3.技能名判定
-            if (heroList.indexOf(jsonData.log[preRound - i].aidx) >= 0 &&
+            if (heroIDList.indexOf(Number(jsonData.log[preRound - i].aidx)) >= 0 &&
                 jsonData.log[preRound - i].didx == logData.aidx &&
                 jsonData.log[preRound - i].att_combat.ats == skillname) {
                 SkillUserList.push([jsonData.log[preRound - i].aidx, preRound - i]);
