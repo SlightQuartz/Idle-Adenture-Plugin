@@ -303,10 +303,11 @@ option_hero = {
 };
 
 function SetHeroCharts() {
+    var dataGroup = [1000, 20, 20, 20, 500, 20, 20, 20];
     $.each(heroList, function (index, value) {
         option_hero.series[0].data[index].name = this.name;
         option_hero.legend.selected[this.name] = true;
-        option_hero.series[0].data[index].value =
+        var dataValue = 
                    [Number(Math.round(this.info.dmg / this.info.act)),
                     Number(Math.round(this.info.crit*100 / this.info.hit)),
                     Number(Math.round(this.info.dodged * 100 / this.info.hit)),
@@ -315,7 +316,24 @@ function SetHeroCharts() {
                     Number(Math.round(this.info.crited * 100 / this.info.injured)),
                     Number(Math.round(this.info.dodge * 100 / this.info.injured)),
                     Number(Math.round(this.info.block * 100 / this.info.injured))];
+
+        $.each(dataGroup, function (index ,value) {
+            if (value < dataValue[index]) {
+                dataGroup[index] = dataValue[index];
+            }
+        });
+        option_hero.series[0].data[index].value = dataValue;
     });
+    option_hero.radar.indicator = [
+        { name: 'Dmg', max: dataGroup[0] },
+        { name: 'Crit', max: dataGroup[1] },
+        { name: 'Dodged', max: dataGroup[2] },
+        { name: 'Blocked', max: dataGroup[3] },
+        { name: 'Heal', max: dataGroup[4] },
+        { name: 'Crited', max: dataGroup[5] },
+        { name: 'Dodge', max: dataGroup[6] },
+        { name: 'Block', max: dataGroup[7] }
+    ]
     $.each(heroList, function (index, value) {
         $.each(heroList, function (index, value) {
             option_hero.legend.selected[this.name] = false;
