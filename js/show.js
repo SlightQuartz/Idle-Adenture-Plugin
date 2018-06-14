@@ -109,8 +109,16 @@ function SkillItem($item, data) {
 /// </summary>
 function Show_SummaryBoard() {
     $(".summary tbody").empty();
+    var totaldmg = 0;
+    var totalheal =0;
     $(heroList).each(function () {
-        $node = $('<tr><th scope="row">' + ($(".summary tbody").find("tr").length + 1) + '</th><td>' + this.name + '</td><td>' + this.info.dmg + '</td><td>' + this.info.heal + '</td></tr>');
+        totaldmg += this.info.dmg;
+        totalheal += this.info.heal;
+    });
+    $(heroList).each(function () {
+        $node = $('<tr><th scope="row">' + ($(".summary tbody").find("tr").length + 1) + '</th><td>' + this.name + '</td><td>'
+            + this.info.dmg +'&nbsp;('+((totaldmg>0)?(this.info.dmg*100/totaldmg).toFixed(2):0) +'%)</td><td>'
+            + this.info.heal + '&nbsp;('+ ((totalheal>0)?(this.info.heal*100/totalheal).toFixed(2):0) +'%)</td></tr>');
         $(".summary tbody").append($node);
     });
 }

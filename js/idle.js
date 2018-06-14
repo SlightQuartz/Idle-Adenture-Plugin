@@ -37,7 +37,6 @@ function LogsCal() {
     });
 }
 
-
 function ResetCharacterID(callback) {
     heroIDList = [];
     if (heroList.length == 0) {
@@ -356,33 +355,6 @@ function GroupPoison(logData, List, SkillName) {
     }
 }
 
-function HitByPoe(logData) {
-    if (Number(logData.didx) == hitbypoedata[0][0] || Number(logData.didx) == hitbypoedata[1][0] || Number(logData.didx) == hitbypoedata[2][0]) {
-        switch (Number(logData.didx)) {
-            case hitbypoedata[0][0]:
-                AddHitByPoeData(logData,0);
-                break;
-            case hitbypoedata[1][0]:
-                AddHitByPoeData(logData,1);
-                break;
-            case hitbypoedata[2][0]:
-                AddHitByPoeData(logData,2);
-                break;
-        }
-    }
-}
-
-function AddHitByPoeData(logData,ii) {
-    if(logData.att_combat.dfn == hitbypoedata[ii][1]){
-        //hit
-        hitbypoedata[ii][2] += Number(logData.att_combat.atc);
-        hitbypoedata[ii][3] += Number(logData.att_combat.dc);
-        hitbypoedata[ii][5] += Number(logData.att_combat.cc);
-        if(Number(logData.att_combat.atc)>0 &&Number(logData.att_combat.d)==0&&Number(logData.att_combat.dc)==0&&Number(logData.att_combat.dr)>0){
-            hitbypoedata[ii][7] += 1;
-        }
-    }
-}
 /// <summary>
 /// 命中统计
 /// </summary>
