@@ -12,7 +12,12 @@ function Main() {
 //*/
 
 function Main(data) {
-    jsonData = JSON.parse(data);
+	if (data.startsWith("{")){
+		jsonData = JSON.parse(data);
+	}else{
+		$.base64.utf8decode = true;
+		jsonData = JSON.parse($.base64.atob(data));
+	}
     ResetAll();
 }
 //*/
