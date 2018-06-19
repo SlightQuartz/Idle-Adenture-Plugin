@@ -1,6 +1,7 @@
-﻿/*
+﻿
 function Main() {
-    $.getJSON("../fightlog.json", function (data) {
+    $.get("../fightlog.txt").success(function (content) {
+        data = JSON.parse(content);
         if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
             jsonData = data;
             basicInfo.endTime = new Date();
@@ -10,14 +11,10 @@ function Main() {
     //setTimeout("Main()", 10000); //读取频率
 }
 //*/
-
+/*
 function Main(data) {
-	if (data.startsWith("{")){
-		jsonData = JSON.parse(data);
-	}else{
-		$.base64.utf8decode = true;
-		jsonData = JSON.parse($.base64.atob(data));
-	}
+	$.base64.utf8decode = true;
+	jsonData = JSON.parse($.base64.atob(data));
     ResetAll();
 }
 //*/

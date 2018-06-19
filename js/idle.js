@@ -4,7 +4,7 @@ var heroList = [];
 var heroIDList = [];
 
 $(document).ready(function () {
-    //Main();
+    Main();
     basicInfo.startTime = new Date();
     $(".basicInfo li>span").eq(0).html([basicInfo.startTime.getFullYear(), basicInfo.startTime.getMonth() + 1, basicInfo.startTime.getDate()].join('-')
         + ' ' + [basicInfo.startTime.getHours(), basicInfo.startTime.getMinutes(), basicInfo.startTime.getSeconds()].join(':'));
