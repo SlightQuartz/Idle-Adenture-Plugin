@@ -305,8 +305,8 @@ option_hero = {
 function SetHeroCharts() {
     var dataGroup = [1000, 20, 20, 20, 500, 20, 20, 20];
     $.each(heroList, function (index, value) {
-        option_hero.series[0].data[index].name = this.name;
-        option_hero.legend.selected[index] = true;
+        option_hero.series[0].data[index].name = this.name+index;
+        option_hero.legend.selected[this.name + index] = true;
         var dataValue = 
                    [Number(Math.round(this.info.dmg / this.info.act)),
                     Number(Math.round(this.info.crit*100 / this.info.hit)),
@@ -336,9 +336,9 @@ function SetHeroCharts() {
     ]
     $.each(heroList, function (index_0, value) {
         $.each(heroList, function (index_1, value) {
-            option_hero.legend.selected[index_1] = false;
+            option_hero.legend.selected[this.name + index_1] = false;
         });
-        option_hero.legend.selected[index_0] = true;
+        option_hero.legend.selected[this.name + index_0] = true;
         Echart_build(option_hero, $(".heroChart>div").eq(index_0));
     });
 }
