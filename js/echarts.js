@@ -335,17 +335,17 @@ function SetHeroCharts() {
             Number(Math.round((this.defend.ignoredDmg + this.defend.dodgeDmg + this.defend.blockDmg) / this.info.asTarget)),
             Number(Math.round(this.info.heal / this.info.act))];
 
-        if (dataValue[0] > dataGroup[0]) { dataGroup[0] = dataValue[0]; }
+        if (dataValue[0] > dataGroup[1]) { dataGroup[1] = dataValue[0]; }
         if (dataValue[1] > dataGroup[0]) { dataGroup[0] = dataValue[1]; }
         if (dataValue[2] > dataGroup[1]) { dataGroup[1] = dataValue[2]; }
-        if (dataValue[3] > dataGroup[1]) { dataGroup[1] = dataValue[3]; }
+        if (dataValue[3] > dataGroup[0]) { dataGroup[0] = dataValue[3]; }
         option_hero.series[0].data[index].value = dataValue;
     });
     option_hero.radar.indicator = [
-        { name: 'Dmg', max: dataGroup[0] },
-        { name: 'Heal', max: dataGroup[0] },
         { name: 'Injured', max: dataGroup[1] },
-        { name: 'Ignored', max: dataGroup[1] }
+        { name: 'Dmg', max: dataGroup[0] },
+        { name: 'Ignored', max: dataGroup[1] },
+        { name: 'Heal', max: dataGroup[0] }
     ]
     $.each(heroList, function (index_0, value) {
         $.each(heroList, function (index_1, value) {

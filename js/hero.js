@@ -94,14 +94,14 @@
 
     Object.defineProperty(this, "defend", {
         get: function () {
+            defend.dmg = info.dmg;
+            defend.heal = info.heal;
             return defend;
         },
         set: function (array) {
             //array[injuredDmg, ignoredDmg, injuredAoe, injuredDot]
             defend.injuredDmg += Number(array[0]);
             defend.ignoredDmg += Number(array[1]);
-            defend.dmg = info.dmg;
-            defend.heal = info.heal;
             defend.dodgeDmg = Math.round((defend.injuredDmg + defend.ignoredDmg) * info.dodge / (info.injured - info.dodge - info.block));
             defend.blockDmg = Math.round((defend.injuredDmg + defend.ignoredDmg) * info.block / (info.injured - info.dodge - info.block));
             // 因无法区分重名角色，故暂不统计
