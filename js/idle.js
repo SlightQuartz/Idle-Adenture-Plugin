@@ -4,7 +4,7 @@ var heroList = [];
 var heroIDList = [];
 
 $(document).ready(function () {
-    Main();
+    //Main();
     basicInfo.startTime = new Date();
     $(".basicInfo li>span").eq(0).html([basicInfo.startTime.getFullYear(), basicInfo.startTime.getMonth() + 1, basicInfo.startTime.getDate()].join('-')
         + ' ' + [basicInfo.startTime.getHours(), basicInfo.startTime.getMinutes(), basicInfo.startTime.getSeconds()].join(':'));
@@ -47,6 +47,9 @@ function ResetCharacterID(callback) {
             heroIDList.push(value.idx);
             $(".hero").eq(index).addClass("active");
             $(".hero").eq(index).find(".panel-heading").html(value.nam);
+            // 增加下拉菜单
+            var $jsonNode = $('<li role="separator" class="divider"></li><li><a href="#" onclick="MenuJson(heroList[' + index + '].info)">' + value.nam + '.info</a></li><li><a href="#" onclick="MenuJson(heroList[' + index + '].skill)">' + value.nam + '.skill</a></li><li><a href="#" onclick="MenuJson(heroList[' + index + '].defend)">' + value.nam + '.defend</a></li>');
+            $(".jsonMenu").append($jsonNode);
         });
     } else {
         let indexList = [];
@@ -80,13 +83,13 @@ function LogCal(logData) {
         var BS2 = 0; //炽热之星2判定
         $(logData.att_spec).each(function () {
             if (this.skn == "炽焰之星") {
-                SkillGroup(logData.aidx, "炽焰之星", 0, 0, 0, 0, Number(this.dmg), 0);
+                SkillGroup(logData.aidx, "炽焰之星", 0, 0, 0, 0, Number(this.dmg), 0,0);
             }
             if (this.skn == "炽焰之星II") { BS2 = Number(this.admg); }
         });
         $(logData.aoe_combat).each(function () {
             if (BS2 != 0) {
-                if (Number(this.d) == BS2) { SkillGroup(logData.aidx, "炽焰之星II", 0, 0, 0, 0, BS2, 0); }
+                if (Number(this.d) == BS2) { SkillGroup(logData.aidx, "炽焰之星II", 0, 0, 0, 0, BS2, 0,0); }
                 else { aoeD += Number(this.d); }
             }
             else {
@@ -100,26 +103,26 @@ function LogCal(logData) {
             if (this.dmg != null) { roundD += Number(this.dmg) }
             if (this.dyd != null) { roundD += Number(this.dyd) * logData.att_round.length }//改变
             if (this.heal != null) { roundH += Number(this.heal) }
-            SkillGroup(logData.aidx, this.skn, 0, 0, 0, 0, roundD, roundH);
+            SkillGroup(logData.aidx, this.skn, 0, 0, 0, 0, roundD, roundH,0);
         });
         $(logData.att_aura).each(function () {
             if (this.d != null || this.heal != null) {
                 //追溯使用者
                 //console.log(jsonData.log.indexOf(logData)+this.skn+ FindAuraUser(this.skn, logData, this.rds));
-                SkillGroup(FindAuraUser(this.skn, logData, this.rds), this.skn, 0, 0, 0, 0, this.d == null ? 0 : Number(this.d), this.heal == null ? 0 : Number(this.heal));
+                SkillGroup(FindAuraUser(this.skn, logData, this.rds), this.skn, 0, 0, 0, 0, this.d == null ? 0 : Number(this.d), this.heal == null ? 0 : Number(this.heal),0);
             }
         });
-        SkillGroup(logData.aidx, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/, Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH, 0, 0);
+        SkillGroup(logData.aidx, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/, Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH, 0, 0, logData.att_combat.atc);
     }
     //敌方回合
     if (heroIDList.indexOf(Number(logData.didx)) >= 0) {
         if (Number(logData.att_combat.ct) > 0) {
             for (var i = 0; i < logData.att_combat.cnt; i++) {
-                SkillGroup(logData.didx, "反击", Math.round(Number(logData.att_combat.ct) / logData.att_combat.cnt), 0, 0, 0, 0, 0);
+                SkillGroup(logData.didx, "反击", Math.round(Number(logData.att_combat.ct) / logData.att_combat.cnt), 0, 0, 0, 0, 0, logData.att_combat.cnt);
             }
         }
         if (Number(logData.att_combat.dbk) > 0) {
-            SkillGroup(logData.didx, "反弹", Number(logData.att_combat.dbk), 0, 0, 0, 0, 0);
+            SkillGroup(logData.didx, "反弹", Number(logData.att_combat.dbk), 0, 0, 0, 0, 0,0);
         }
         //毒伤统计
         var PoisonSpitList = [];
@@ -189,7 +192,7 @@ function LogCal(logData) {
                 if (this.skn == "束缚") {
                     var ShacklesUserList = FindSkillUser(logData, "束缚");
                     if (ShacklesUserList.length > 0) {
-                        SkillGroup(ShacklesUserList[0][0], "束缚", 0, 0, 0, 0, Number(this.rmh), 0);
+                        SkillGroup(ShacklesUserList[0][0], "束缚", 0, 0, 0, 0, Number(this.rmh), 0,0);
                     }
                 }
             });
@@ -211,7 +214,7 @@ function LogCal(logData) {
 /// <param name="DotD">dot伤害</param>
 /// <param name="DotH">dot治疗</param>
 /// <param name="Count">技能使用次数</param>
-function SkillGroup(heroID, skillName, DmgA, HealA, AOED, AOEH, DotD, DotH) {
+function SkillGroup(heroID, skillName, DmgA, HealA, AOED, AOEH, DotD, DotH, Count) {
     DmgA = Number(DmgA);
     HealA = Number(HealA);
     AOED = Number(AOED);
@@ -220,7 +223,7 @@ function SkillGroup(heroID, skillName, DmgA, HealA, AOED, AOEH, DotD, DotH) {
     DotH = Number(DotH);
     $(heroList).each(function () {
         if (this.id == Number(heroID)) {
-            this.skill = [skillName, DmgA, AOED, DotD, HealA, AOEH, DotH];
+            this.skill = [skillName, DmgA, AOED, DotD, HealA, AOEH, DotH, Count];
             return false;
         }
     });
@@ -349,7 +352,7 @@ function GroupPoison(logData, List, SkillName) {
         for (var i = 0; i < List.length; i++) {
             //灵魂操纵可能会导致毒数量多于释放技能人数，特殊处理，舍弃时间最短的一个
             if (UserList.length > 0 && i < UserList.length) {
-                SkillGroup(UserList[i][0], SkillName, 0, 0, 0, 0, Number(List[List.length - 1 - i][0]), 0, 0);
+                SkillGroup(UserList[i][0], SkillName, 0, 0, 0, 0, Number(List[List.length - 1 - i][0]), 0, 0,0);
             }
         }
     }
@@ -368,6 +371,7 @@ function HitByFoe(logData) {
                 } else {
                     this.injured(Number(logData.att_combat.atc), Number(logData.att_combat.cc), Number(logData.att_combat.dc),0);
                 }
+                this.defend = [logData.att_combat.d, logData.att_combat.drd];
                 return false;
             }
         });

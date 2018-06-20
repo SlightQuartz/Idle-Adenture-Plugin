@@ -95,7 +95,7 @@ var option_characters = {
         }
     },
     legend: {
-        data:[ 'Dmg', 'Heal']
+        data:[ 'Dmg', 'Heal',"Injured","Ignored"]
     },
     grid: {
         left: '3%',
@@ -137,6 +137,28 @@ var option_characters = {
                 }
             },
             data:[320, 302, 341]
+        },
+        {
+            name: 'Injured',
+            type: 'bar',
+            stack: 'a',
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            data: [320, 302, 341]
+        },
+        {
+            name: 'Ignored',
+            type: 'bar',
+            stack: 'a',
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            data: [320, 302, 341]
         }
     ]
 };
@@ -148,10 +170,14 @@ function SetSummaryChart() {
     option_characters.yAxis[0].data = [];
     option_characters.series[0].data = [];
     option_characters.series[1].data = [];
+    option_characters.series[2].data = [];
+    option_characters.series[3].data = [];
     $(heroList).each(function () {
         option_characters.yAxis[0].data.push(this.name);
         option_characters.series[0].data.push(this.info.dmg);
         option_characters.series[1].data.push(this.info.heal);
+        option_characters.series[2].data.push(-this.defend.injuredDmg);
+        option_characters.series[3].data.push(-this.defend.ignoredDmg - this.defend.dodgeDmg - this.defend.blockDmg);
     });
     Echart_build(option_characters, $("#CharactersChart"));
 }
@@ -164,7 +190,7 @@ var option_skill = {
         }
     },
     legend: {
-        data: ['D.A', 'D.aoe', 'D.dot', 'H.A', 'H.aoe', 'H.dot']
+        data: ['D.A', 'D.aoe', 'D.ot', 'H.A', 'H.aoe', 'H.ot']
     },
     grid: {
         top: '20%',
@@ -198,7 +224,7 @@ var option_skill = {
             data: [120, 132, 101, 302, 301]
         },
         {
-            name: 'D.dot',
+            name: 'D.ot',
             type: 'bar',
             stack: '伤害',
             label: {
@@ -222,7 +248,7 @@ var option_skill = {
             data: [150, 212, 201, 302, 301]
         },
         {
-            name: 'H.dot',
+            name: 'H.ot',
             type: 'bar',
             stack: '伤害',
             label: {
@@ -272,14 +298,10 @@ option_hero = {
            }
         },
         indicator: [
-            { name: 'Dmg',max: 1500},
-            { name: 'Crit', max: 30},
-            { name: 'Dodged', max: 30},
-            { name: 'Blocked', max: 30},
-            { name: 'Heal', max: 1500},
-            { name: 'Crited', max: 30},
-            { name: 'Dodge', max: 30},
-            { name: 'Block', max: 30}
+            { name: 'Dmg',max: 0},
+            { name: 'Heal', max: 0},
+            { name: 'Injured', max: 0 },
+            { name: 'Ignored', max: 0 }
         ]
     },
     series: [{
@@ -303,36 +325,26 @@ option_hero = {
 };
 
 function SetHeroCharts() {
-    var dataGroup = [1000, 20, 20, 20, 500, 20, 20, 20];
+    var dataGroup = [0,0];
     $.each(heroList, function (index, value) {
         option_hero.series[0].data[index].name = this.name+index;
         option_hero.legend.selected[this.name + index] = true;
-        var dataValue = 
-                   [Number(Math.round(this.info.dmg / this.info.act)),
-                    Number(Math.round(this.info.crit*100 / this.info.hit)),
-                    Number(Math.round(this.info.dodged * 100 / this.info.hit)),
-                    Number(Math.round(this.info.blocked * 100 / this.info.hit)),
-                    Number(Math.round(this.info.heal / this.info.act)),
-                    Number(Math.round(this.info.crited * 100 / this.info.injured)),
-                    Number(Math.round(this.info.dodge * 100 / this.info.injured)),
-                    Number(Math.round(this.info.block * 100 / this.info.injured))];
+        var dataValue = [Number(Math.round(this.defend.dmg / this.info.act)),
+                         Number(Math.round(this.defend.heal / this.info.act)),
+                         Number(Math.round(this.defend.injuredDmg / this.info.asTarget)),
+                         Number(Math.round((this.defend.ignoredDmg + this.defend.dodgeDmg + this.defend.blockDmg) / this.info.asTarget))];
 
-        $.each(dataGroup, function (index ,value) {
-            if (value < dataValue[index]) {
-                dataGroup[index] = dataValue[index];
-            }
-        });
+        if (dataValue[0] > dataGroup[0]) { dataGroup[0] = dataValue[0]; }
+        if (dataValue[1] > dataGroup[0]) { dataGroup[0] = dataValue[1]; }
+        if (dataValue[2] > dataGroup[1]) { dataGroup[1] = dataValue[2]; }
+        if (dataValue[3] > dataGroup[1]) { dataGroup[1] = dataValue[3]; }
         option_hero.series[0].data[index].value = dataValue;
     });
     option_hero.radar.indicator = [
         { name: 'Dmg', max: dataGroup[0] },
-        { name: 'Crit', max: dataGroup[1] },
-        { name: 'Dodged', max: dataGroup[2] },
-        { name: 'Blocked', max: dataGroup[3] },
-        { name: 'Heal', max: dataGroup[4] },
-        { name: 'Crited', max: dataGroup[5] },
-        { name: 'Dodge', max: dataGroup[6] },
-        { name: 'Block', max: dataGroup[7] }
+        { name: 'Heal', max: dataGroup[0] },
+        { name: 'Injured', max: dataGroup[1] },
+        { name: 'Ignored', max: dataGroup[1] }
     ]
     $.each(heroList, function (index_0, value) {
         $.each(heroList, function (index_1, value) {

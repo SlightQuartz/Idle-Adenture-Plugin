@@ -36,3 +36,9 @@
 .hero .panel-body tr:first-child th,.hero .panel-body tr:first-child td{
 	border-top: 0px;
 }
+.container{
+	display:none;
+}
+.container.active{
+	display:block;
+}
