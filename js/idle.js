@@ -112,7 +112,7 @@ function LogCal(logData) {
                 SkillGroup(FindAuraUser(this.skn, logData, this.rds), this.skn, 0, 0, 0, 0, this.d == null ? 0 : Number(this.d), this.heal == null ? 0 : Number(this.heal),0);
             }
         });
-        SkillGroup(logData.aidx, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/, Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH, 0, 0, logData.att_combat.atc);
+        SkillGroup(logData.aidx, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/, Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH, 0, 0, logData.att_combat.atc > 1 ? logData.att_combat.atc : 1);
     }
     //敌方回合
     if (heroIDList.indexOf(Number(logData.didx)) >= 0) {
