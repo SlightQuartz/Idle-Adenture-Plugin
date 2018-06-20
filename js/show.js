@@ -110,15 +110,20 @@ function SkillItem($item, data) {
 function Show_SummaryBoard() {
     $(".summary tbody").empty();
     var totaldmg = 0;
-    var totalheal =0;
+    var totalheal = 0;
+    var totalinjured = 0;
+    var totalignore = 0;
     $(heroList).each(function () {
         totaldmg += this.info.dmg;
         totalheal += this.info.heal;
+        totalinjured += this.defend.injuredDmg;
     });
     $(heroList).each(function () {
         $node = $('<tr><th scope="row">' + ($(".summary tbody").find("tr").length + 1) + '</th><td>' + this.name + '</td><td>'
             + this.info.dmg +'&nbsp;('+((totaldmg>0)?(this.info.dmg*100/totaldmg).toFixed(2):0) +'%)</td><td>'
-            + this.info.heal + '&nbsp;('+ ((totalheal>0)?(this.info.heal*100/totalheal).toFixed(2):0) +'%)</td></tr>');
+            + this.info.heal + '&nbsp;(' + ((totalheal > 0) ? (this.info.heal * 100 / totalheal).toFixed(2) : 0) + '%)</td><td>'
+            + this.defend.injuredDmg + '&nbsp;(' + ((totalinjured > 0) ? (this.defend.injuredDmg * 100 / totalinjured).toFixed(2) : 0) + '%)</td><td>'
+            + (this.defend.ignoredDmg + this.defend.dodgeDmg + this.defend.blockDmg) + '&nbsp;(' + ((this.defend.injuredDmg + this.defend.ignoredDmg + this.defend.dodgeDmg + this.defend.blockDmg > 0) ? ((this.defend.ignoredDmg + this.defend.dodgeDmg + this.defend.blockDmg) * 100 / (this.defend.injuredDmg + this.defend.ignoredDmg + this.defend.dodgeDmg + this.defend.blockDmg)).toFixed(2) : 0) +'%)</td></tr>');
         $(".summary tbody").append($node);
     });
 }

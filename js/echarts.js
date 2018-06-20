@@ -298,10 +298,10 @@ option_hero = {
            }
         },
         indicator: [
-            { name: 'Dmg',max: 0},
-            { name: 'Heal', max: 0},
             { name: 'Injured', max: 0 },
-            { name: 'Ignored', max: 0 }
+            { name: 'Dmg',max: 0},
+            { name: 'Ignored', max: 0 },
+            { name: 'Heal', max: 0 }
         ]
     },
     series: [{
@@ -309,15 +309,15 @@ option_hero = {
         // areaStyle: {normal: {}},
         data : [
             {
-                value: [0, 0, 0, 0, 0, 0, 0, 0],
+                value: [0, 0, 0, 0],
                 name : 'hero_1'
             },
             {
-                value: [0, 0, 0, 0, 0, 0, 0, 0],
+                value: [0, 0, 0, 0],
                 name: 'hero_2'
             },
             {
-                value: [0, 0, 0, 0, 0, 0, 0, 0],
+                value: [0, 0, 0, 0],
                 name: 'hero_3'
             }
         ]
@@ -329,10 +329,11 @@ function SetHeroCharts() {
     $.each(heroList, function (index, value) {
         option_hero.series[0].data[index].name = this.name+index;
         option_hero.legend.selected[this.name + index] = true;
-        var dataValue = [Number(Math.round(this.defend.dmg / this.info.act)),
-                         Number(Math.round(this.defend.heal / this.info.act)),
-                         Number(Math.round(this.defend.injuredDmg / this.info.asTarget)),
-                         Number(Math.round((this.defend.ignoredDmg + this.defend.dodgeDmg + this.defend.blockDmg) / this.info.asTarget))];
+        var dataValue = [
+            Number(Math.round(this.defend.injuredDmg / this.info.asTarget)),
+            Number(Math.round(this.info.dmg / this.info.act)),
+            Number(Math.round((this.defend.ignoredDmg + this.defend.dodgeDmg + this.defend.blockDmg) / this.info.asTarget)),
+            Number(Math.round(this.info.heal / this.info.act))];
 
         if (dataValue[0] > dataGroup[0]) { dataGroup[0] = dataValue[0]; }
         if (dataValue[1] > dataGroup[0]) { dataGroup[0] = dataValue[1]; }
