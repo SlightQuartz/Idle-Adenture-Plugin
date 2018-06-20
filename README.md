@@ -4,6 +4,11 @@
 目前有众多的bug，如有问题，最好推到issues上  
 欢迎各位大佬帮忙完善插件
 
+2018.6.20 update  
+**更新内容：**  
+1.增加受伤和免伤统计  
+2.雷达图显示内容更改  
+
 2018.6.16 update  
 **更新内容：**  
 1.增加了base64解码，为解决角色名中有单引号的问题  
@@ -14,7 +19,6 @@
 2.修复“队伍中存在复数同名英雄时所有技能统计数据只会汇聚到其中一人身上”  
 3.增加了一些bug  
 4.为Summary增加了百分比  
-
 
 2018.6.13 update  
 **更新内容：**  
@@ -62,8 +66,8 @@
 欢迎大家一起更新  
 **已知问题：**  
 1.五彩自伤无法获得（没做过五彩）  
-<del>2.毒伤无法获得（没刺客职业，不知道毒伤结构</del>  
-<del>3.反击、反弹伤害未计算</del>    
+~~2.毒伤无法获得（没刺客职业，不知道毒伤结构~~  
+~~3.反击、反弹伤害未计算~~    
 4.“休息”未处理  
 
 09.06.2018 Update  
@@ -71,7 +75,7 @@ Welcome to help me to update the plugin
 **Known Issue:**  
 1. Colorful Passive Skill  
 I haven't forged it, so I do not understand how it works.  
-2. Poison Damage is not included  
-I don't have class can deal poison damage  
-3. Reliate Damage is not included  
+~~2. Poison Damage is not included  
+I don't have class can deal poison damage~~  
+~~3. Reliate Damage is not included~~  
 4. "Rest" time is not calculated.   
