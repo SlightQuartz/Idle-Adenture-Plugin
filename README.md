@@ -73,9 +73,9 @@
 09.06.2018 Update  
 Welcome to help me to update the plugin  
 **Known Issue:**  
-1. Colorful Passive Skill  
+1.Colorful Passive Skill  
 I haven't forged it, so I do not understand how it works.  
-~~2. Poison Damage is not included  
+~~2.Poison Damage is not included  
 I don't have class can deal poison damage~~  
-~~3. Reliate Damage is not included~~  
-4. "Rest" time is not calculated.   
+~~3.Reliate Damage is not included~~  
+4."Rest" time is not calculated.   
