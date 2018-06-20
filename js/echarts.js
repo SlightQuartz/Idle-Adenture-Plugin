@@ -95,7 +95,7 @@ var option_characters = {
         }
     },
     legend: {
-        data:[ 'Dmg', 'Heal',"Injured","Ignored"]
+        data: ['Dmg', 'Heal', "Injured", "Ignored", "Injured.aoe","Injured.dot"]
     },
     grid: {
         left: '3%',
@@ -159,6 +159,28 @@ var option_characters = {
                 }
             },
             data: [320, 302, 341]
+        },
+        {
+            name: 'Injured.aoe',
+            type: 'bar',
+            stack: 'a',
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            data: [320, 302, 341]
+        },
+        {
+            name: 'Injured.dot',
+            type: 'bar',
+            stack: 'a',
+            label: {
+                normal: {
+                    show: true
+                }
+            },
+            data: [320, 302, 341]
         }
     ]
 };
@@ -172,12 +194,16 @@ function SetSummaryChart() {
     option_characters.series[1].data = [];
     option_characters.series[2].data = [];
     option_characters.series[3].data = [];
+    option_characters.series[4].data = [];
+    option_characters.series[5].data = [];
     $(heroList).each(function () {
         option_characters.yAxis[0].data.push(this.name);
         option_characters.series[0].data.push(this.info.dmg);
         option_characters.series[1].data.push(this.info.heal);
         option_characters.series[2].data.push(-this.defend.injuredDmg);
         option_characters.series[3].data.push(-this.defend.ignoredDmg - this.defend.dodgeDmg - this.defend.blockDmg);
+        option_characters.series[4].data.push(-this.defend.injuredAoe);
+        option_characters.series[5].data.push(-this.defend.injuredDot);
     });
     Echart_build(option_characters, $("#CharactersChart"));
 }

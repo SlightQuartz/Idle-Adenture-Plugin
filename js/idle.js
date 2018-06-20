@@ -205,7 +205,7 @@ function LogCal(logData) {
 /// <summary>
 /// 将解析出来的伤害进行分组统计
 /// </summary>
-/// <param name="heroName">角色名</param>
+/// <param name="heroID">角色ID</param>
 /// <param name="skillName">技能名</param>
 /// <param name="Dmg">直接伤害</param>
 /// <param name="Heal">直接治疗</param>
@@ -371,7 +371,29 @@ function HitByFoe(logData) {
                 } else {
                     this.injured(Number(logData.att_combat.atc), Number(logData.att_combat.cc), Number(logData.att_combat.dc),0);
                 }
-                this.defend = [logData.att_combat.d, logData.att_combat.drd];
+                // 受伤量统计
+                var heroValue = this;
+                this.defend = [logData.att_combat.d, logData.att_combat.drd, 0, 0];
+                /*
+                $(logData.att_spec).each(function () {
+                    if (this.skn == "炽焰之星") {
+                        DefendGroup(logData.dfn,0,0 0, Number(this.dmg));
+                    }
+                });
+                */
+                $(logData.aoe_combat).each(function () {
+                    console.log(this);
+                    if (this.d != null) { DefendGroup(this.dfn, this.dt, this.dtr, this.d,0); }//包含"恋人"效果
+                });
+                $(logData.att_round).each(function () {
+                    var roundD = 0;
+                    if (this.dmg != null) { roundD += Number(this.dmg) }
+                    if (this.dyd != null) { roundD += Number(this.dyd) * logData.att_round.length }//改变
+                    heroValue.defend = [0, 0, 0, roundD];
+                });
+                $(logData.att_aura).each(function () {
+                    heroValue.defend = [0, 0, 0, this.d == null ? 0 : Number(this.d)];
+                });
                 return false;
             }
         });
@@ -388,4 +410,23 @@ function HitByFoe(logData) {
             }
         });
     }
+}
+
+/// <summary>
+/// 将解析出来的伤害进行分组统计
+/// </summary>
+/// <param name="heroName">角色名</param>
+/// <param name="AOED">aoe伤害</param>
+/// <param name="AOEH">dot伤害</param>
+function DefendGroup(heroName, Dmg, ignoreDmg, AOED, DotD) {
+    Dmg = Number(Dmg);
+    ignoreDmg = Number(ignoreDmg);
+    AOED = Number(AOED);
+    DotD = Number(DotD);
+    $(heroList).each(function () {
+        if (this.name == heroName) {
+            this.defend = [Dmg, ignoreDmg, AOED, DotD];
+            return false;
+        }
+    });
 }

@@ -20,12 +20,12 @@
         dmg: 0,       //总伤害
         heal: 0,      //总治疗
         injuredDmg: 0,//总受伤
-        // 因无法区分重名角色，故暂不统计
-        //injuredAoe: 0,//总aoe受伤
-        //injuredDot: 0,//总dot受伤
         ignoredDmg: 0,//无视伤害
         dodgeDmg: 0, //躲避伤害
         blockDmg: 0, //格挡伤害
+        // 因无法区分重名角色，故暂不统计
+        injuredAoe: 0,//总aoe受伤
+        injuredDot: 0,//总dot受伤
     };
 
     this.SetID = function(idValue,nameValue) {
@@ -105,8 +105,8 @@
             defend.dodgeDmg = Math.round((defend.injuredDmg + defend.ignoredDmg) * info.dodge / (info.injured - info.dodge - info.block));
             defend.blockDmg = Math.round((defend.injuredDmg + defend.ignoredDmg) * info.block / (info.injured - info.dodge - info.block));
             // 因无法区分重名角色，故暂不统计
-            //defend.injuredAoe += Number(array[2]);
-            //defend.injuredDot += Number(array[3]);
+            defend.injuredAoe += Number(array[2]);
+            defend.injuredDot += Number(array[3]);
         }
     });
 }
