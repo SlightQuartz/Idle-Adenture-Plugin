@@ -33,6 +33,7 @@ function LogsCal() {
         $.each(jsonData.log, function (index, value) {
             LogCal(value);
             HitByFoe(value);
+            HpTendency(value, index);
         });
     });
 }
@@ -382,7 +383,6 @@ function HitByFoe(logData) {
                 });
                 */
                 $(logData.aoe_combat).each(function () {
-                    console.log(this);
                     if (this.d != null) { DefendGroup(this.dfn, this.dt, this.dtr, this.d,0); }//包含"恋人"效果
                 });
                 $(logData.att_round).each(function () {
@@ -429,4 +429,21 @@ function DefendGroup(heroName, Dmg, ignoreDmg, AOED, DotD) {
             return false;
         }
     });
+}
+
+/// <summary>
+/// 将hp数据导入hero
+/// </summary>
+/// <param name="data"></param>
+function HpTendency(data,turn) {
+    $.each(data.all_chara,function (index , value) {
+        $(heroList).each(function () {
+            if (this.id == value.cid) {
+                this.hp = value.hp
+                return false;
+            }
+        });
+    });
+    option_hp_skillName.push(data.att_combat.atn +"："+data.att_combat.ats);
+    option_hp_turn.push(basicInfo.turns.length + "-" + (turn+1));
 }

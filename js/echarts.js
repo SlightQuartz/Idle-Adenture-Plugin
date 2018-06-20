@@ -185,27 +185,40 @@ var option_characters = {
     ]
 };
 
+var summaryChart = true;
 /// <summary>
 /// 重设summary图标，使用charactersArray数据
 /// </summary>
 function SetSummaryChart() {
-    option_characters.yAxis[0].data = [];
-    option_characters.series[0].data = [];
-    option_characters.series[1].data = [];
-    option_characters.series[2].data = [];
-    option_characters.series[3].data = [];
-    option_characters.series[4].data = [];
-    option_characters.series[5].data = [];
-    $(heroList).each(function () {
-        option_characters.yAxis[0].data.push(this.name);
-        option_characters.series[0].data.push(this.info.dmg);
-        option_characters.series[1].data.push(this.info.heal);
-        option_characters.series[2].data.push(-this.defend.injuredDmg);
-        option_characters.series[3].data.push(-this.defend.ignoredDmg - this.defend.dodgeDmg - this.defend.blockDmg);
-        option_characters.series[4].data.push(-this.defend.injuredAoe);
-        option_characters.series[5].data.push(-this.defend.injuredDot);
-    });
-    Echart_build(option_characters, $("#CharactersChart"));
+    if (summaryChart) {
+        option_characters.yAxis[0].data = [];
+        option_characters.series[0].data = [];
+        option_characters.series[1].data = [];
+        option_characters.series[2].data = [];
+        option_characters.series[3].data = [];
+        option_characters.series[4].data = [];
+        option_characters.series[5].data = [];
+        $(heroList).each(function () {
+            option_characters.yAxis[0].data.push(this.name);
+            option_characters.series[0].data.push(this.info.dmg);
+            option_characters.series[1].data.push(this.info.heal);
+            option_characters.series[2].data.push(-this.defend.injuredDmg);
+            option_characters.series[3].data.push(-this.defend.ignoredDmg - this.defend.dodgeDmg - this.defend.blockDmg);
+            option_characters.series[4].data.push(-this.defend.injuredAoe);
+            option_characters.series[5].data.push(-this.defend.injuredDot);
+        });
+        Echart_build(option_characters, $("#CharactersChart"));
+    }
+    else {
+        option_hp.xAxis.data = option_hp_turn;
+        $.each(heroList, function (index, data) {
+            option_hp.legend.data.push(data.name);
+            option_hp.series[index].name = data.name;
+            option_hp.series[index].data = data.hp;
+        });
+        Echart_build(option_hp, $("#CharactersChart"));
+    }
+    
 }
 
 var option_skill = {
@@ -283,8 +296,9 @@ var option_skill = {
         }
     ]
 };
+
 /// <summary>
-/// 清空charactersArray数据，并重设summary图和表格
+/// 绘制技能表
 /// </summary>
 function SetSkillChart(index, data) {
     option_skill.yAxis.data = [];
@@ -391,5 +405,58 @@ function Echart_build(chartOption, $chart) {
 	}
 }
 
-
+var option_hp_skillName = [];
+var option_hp_turn = [];
+var option_hp = {
+    xAxis: {
+        type: 'category',
+        data: []
+    },
+    yAxis: {
+        type: 'value'
+    },
+    legend: {
+        data: []
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            label: {
+                backgroundColor: '#6a7985',
+                formatter: function (params) {
+                    return option_hp_turn[params.seriesData[0].dataIndex] + " " +option_hp_skillName[params.seriesData[0].dataIndex];
+                }
+            }
+        }
+    },
+    toolbox: {
+        feature: {
+            dataZoom: {
+                yAxisIndex: 'none'
+            },
+            dataView: { readOnly: false },
+            restore: {},
+        }
+    },
+    dataZoom: [
+        {
+            show: true
+        }
+    ],
+    series: [{
+            name: '',
+            data: [],
+            type: 'line'
+        },
+        {
+            name: '',
+            data: [],
+            type: 'line'
+        },
+        {
+            name: '',
+            data: [],
+            type: 'line'
+        }]
+};
 

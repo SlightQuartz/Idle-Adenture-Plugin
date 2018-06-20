@@ -27,6 +27,7 @@
         injuredAoe: 0,//总aoe受伤
         injuredDot: 0,//总dot受伤
     };
+    var hp = [];
 
     this.SetID = function(idValue,nameValue) {
         this.id = idValue;
@@ -96,17 +97,26 @@
         get: function () {
             defend.dmg = info.dmg;
             defend.heal = info.heal;
+            defend.dodgeDmg = Math.round((defend.injuredDmg + defend.ignoredDmg) * info.dodge / (info.injured - info.dodge - info.block));
+            defend.blockDmg = Math.round((defend.injuredDmg + defend.ignoredDmg) * info.block / (info.injured - info.dodge - info.block));
             return defend;
         },
         set: function (array) {
             //array[injuredDmg, ignoredDmg, injuredAoe, injuredDot]
             defend.injuredDmg += Number(array[0]);
             defend.ignoredDmg += Number(array[1]);
-            defend.dodgeDmg = Math.round((defend.injuredDmg + defend.ignoredDmg) * info.dodge / (info.injured - info.dodge - info.block));
-            defend.blockDmg = Math.round((defend.injuredDmg + defend.ignoredDmg) * info.block / (info.injured - info.dodge - info.block));
             // 因无法区分重名角色，故暂不统计
             defend.injuredAoe += Number(array[2]);
             defend.injuredDot += Number(array[3]);
+        }
+    });
+
+    Object.defineProperty(this, "hp", {
+        get: function () {
+            return hp;
+        },
+        set: function (data) {
+            hp.push(Number(data));
         }
     });
 }
