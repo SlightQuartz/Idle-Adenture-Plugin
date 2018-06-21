@@ -404,7 +404,7 @@ function Echart_build(chartOption, $chart) {
         charactersChart.setOption(chartOption, true);
 	}
 }
-
+var HPLength = 800;
 var option_hp_skillName = [];
 var option_hp_turn = [];
 var option_hp = {
@@ -434,13 +434,13 @@ var option_hp = {
             dataZoom: {
                 yAxisIndex: 'none'
             },
-            dataView: { readOnly: false },
             restore: {},
         }
     },
     dataZoom: [
         {
-            show: true
+            show: true,
+            startValue: 0
         }
     ],
     series: [{

@@ -16,7 +16,9 @@ function Main() {
 function Main(data) {
 	$.base64.utf8decode = true;
 	jsonData = JSON.parse($.base64.atob(data));
-    ResetAll();
+	if (jsonData.log != null) {
+		ResetAll();
+    }
 }
 //*/
 

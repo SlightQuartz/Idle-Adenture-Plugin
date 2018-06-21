@@ -12,9 +12,14 @@ function Show_BasicBoard() {
     basicInfo.gold += jsonData.end.gold;
     $(".basicInfo li>span").eq(4).html(basicInfo.gold);
     basicInfo.turns.push(jsonData.log.length);
-    /*5*/
-    $(".basicInfo li>span").eq(5).html(Math.round(basicInfo.turns.reduce((acc, val) => acc + val, 0) / basicInfo.turns.length));
-    /*7*/
+    basicInfo.rest.push(jsonData.end.rt);
+	var restCount = CountWithoutZero(basicInfo.rest);
+	if (restCount != 0){
+		$(".basicInfo li>span").eq(5).html(Math.round(basicInfo.turns.reduce((acc, val) => acc + val, 0) / basicInfo.turns.length)+"*"+basicInfo.turns.length+"(+"+Math.round(basicInfo.rest.reduce((acc, val) => acc + val, 0)/restCount)+"*"+CountWithoutZero(basicInfo.rest)+")");
+	}else{
+		$(".basicInfo li>span").eq(5).html(Math.round(basicInfo.turns.reduce((acc, val) => acc + val, 0) / basicInfo.turns.length)+"*"+basicInfo.turns.length+"(+0)");
+	}
+	
 }
 
 
@@ -55,21 +60,21 @@ function SkillBoard($node, data) {
 function SkillItem($item, data) {
     $item.find("td").eq(0).html(data.name);
     var dmgASum = data.dmgA.reduce((acc, val) => acc + val, 0);
-    var dmgCount = CountWithoutZero(data.dmgA);
+    var dmgCount = data.dmgA.length;
     if (dmgCount != 0) {
         $item.find("td").eq(2).html(Math.round(dmgASum / dmgCount) + "*" + dmgCount);
     } else {
         $item.find("td").eq(2).html(0);
     }
     var aoeDSum = data.aoeD.reduce((acc, val) => acc + val, 0);
-    var aoeDCount = CountWithoutZero(data.aoeD);
+    var aoeDCount = data.aoeD.length;
     if (aoeDCount != 0) {
         $item.find("td").eq(3).html(Math.round(aoeDSum / aoeDCount) + "*" + aoeDCount);
     } else {
         $item.find("td").eq(3).html(0);
     }
     var dotDSum = data.dotD.reduce((acc, val) => acc + val, 0);
-    var dotDCount = CountWithoutZero(data.dotD);
+    var dotDCount = data.dotD.length;
     if (dotDCount != 0) {
         $item.find("td").eq(4).html(Math.round(dotDSum / dotDCount) + "*" + dotDCount);
     } else {
@@ -79,21 +84,21 @@ function SkillItem($item, data) {
     $item.find("td").eq(1).html(dmgSum);
 
     var healASum = data.healA.reduce((acc, val) => acc + val, 0);
-    var healCount = CountWithoutZero(data.healA);
+    var healCount = data.healA.length;
     if (healCount != 0) {
         $item.find("td").eq(6).html(Math.round(healASum / healCount) + "*" + healCount);
     } else {
         $item.find("td").eq(6).html(0);
     }
     var aoeHSum = data.aoeH.reduce((acc, val) => acc + val, 0);
-    var aoeHCount = CountWithoutZero(data.aoeH);
+    var aoeHCount = data.aoeH.length;
     if (aoeHCount != 0) {
         $item.find("td").eq(7).html(Math.round(aoeHSum / aoeHCount) + "*" + aoeHCount);
     } else {
         $item.find("td").eq(7).html(0);
     }
     var dotHSum = data.dotH.reduce((acc, val) => acc + val, 0);
-    var dotHCount = CountWithoutZero(data.dotH);
+    var dotHCount = data.dotH.length;
     if (dotHCount != 0) {
         $item.find("td").eq(8).html(Math.round(dotHSum / dotHCount) + "*" + dotHCount);
     } else {
@@ -101,7 +106,7 @@ function SkillItem($item, data) {
     }
     var healSum = healASum + aoeHSum + dotHSum;
     $item.find("td").eq(5).html(healSum);
-    return [data.name[0], dmgASum, aoeDSum, dotDSum, healASum, aoeHSum, dotHSum];
+    return [data.name, dmgASum, aoeDSum, dotDSum, healASum, aoeHSum, dotHSum];
 }
 
 /// <summary>

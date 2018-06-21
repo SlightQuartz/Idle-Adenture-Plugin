@@ -42,31 +42,36 @@
             let exist = false;
             $(skillGroup).each(function () {
                 if (this.name == array[0]){
-                    this.dmgA.push(array[1]);
-                    this.aoeD.push(array[2]);
-                    this.dotD.push(array[3]);
-                    this.healA.push(array[4]);
-                    this.aoeH.push(array[5]);
-                    this.dotH.push(array[6]);
-                    //this.times.push(array[7]);
+                    if (array[1]>0){this.dmgA.push(array[1]);}
+                    if (array[2]>0){this.aoeD.push(array[2]);}
+                    if (array[3]>0){this.dotD.push(array[3]);}
+                    if (array[4]>0){this.healA.push(array[4]);}
+                    if (array[5]>0){this.aoeH.push(array[5]);}
+                    if (array[6]>0){this.dotH.push(array[6]);}
                     this.times += Number(array[7]);
                     exist = true;
                     info.dmg += array[1] + array[2] + array[3];
                     info.heal += array[4] + array[5] + array[6];
-                    return;
+                    return false;
                 }
             });
             if (!exist) {
                 var skillItem = {
-                    name: [array[0]],
-                    dmgA : [array[1]],
-                    aoeD : [array[2]],
-                    dotD : [array[3]],
-                    healA : [array[4]],
-                    aoeH : [array[5]],
-                    dotH: [array[6]],
+                    name: array[0],
+                    dmgA : [],
+                    aoeD : [],
+                    dotD : [],
+                    healA : [],
+                    aoeH : [],
+                    dotH: [],
                     times: Number(array[7])
                 }
+                if (array[1]>0){skillItem.dmgA.push(array[1]);}
+                if (array[2]>0){skillItem.aoeD.push(array[2]);}
+                if (array[3]>0){skillItem.dotD.push(array[3]);}
+                if (array[4]>0){skillItem.healA.push(array[4]);}
+                if (array[5]>0){skillItem.aoeH.push(array[5]);}
+                if (array[6]>0){skillItem.dotH.push(array[6]);}
                 info.dmg += array[1] + array[2] + array[3];
                 info.heal += array[4] + array[5] + array[6];
                 skillGroup.push(skillItem);
@@ -116,9 +121,13 @@
             return hp;
         },
         set: function (data) {
-            hp.push(Number(data));
+			hp.push(Number(data));
+			if(hp.length > HPLength){
+				hp.shift();
+			}
         }
     });
+	
 }
             
                     

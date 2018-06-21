@@ -1,5 +1,5 @@
 ﻿var jsonData = null;
-var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, roundL: 0, roundD: 0, turns: [] };
+var basicInfo = { startTime: null, endTime: null, exp: 0, gold: 0, roundW: 0, roundL: 0, roundD: 0, turns: [] ,rest:[]};
 var heroList = [];
 var heroIDList = [];
 
@@ -30,6 +30,7 @@ function ResetAll() {
 /// </summary>
 function LogsCal() {
     ResetCharacterID(function () {
+		option_hp.dataZoom[0].startValue = option_hp_turn.length;
         $.each(jsonData.log, function (index, value) {
             LogCal(value);
             HitByFoe(value);
@@ -446,4 +447,10 @@ function HpTendency(data,turn) {
     });
     option_hp_skillName.push(data.att_combat.atn +"："+data.att_combat.ats);
     option_hp_turn.push(basicInfo.turns.length + "-" + (turn+1));
+	if(option_hp_skillName.length > HPLength){
+		option_hp_skillName.shift();
+	}
+	if(option_hp_turn.length > HPLength){
+		option_hp_turn.shift();
+	}
 }
