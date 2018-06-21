@@ -30,7 +30,7 @@ function ResetAll() {
 /// </summary>
 function LogsCal() {
     ResetCharacterID(function () {
-		option_hp.dataZoom[0].startValue = option_hp_turn.length;
+		option_hp.dataZoom[0].startValue = option_hp_turn.length>HPLength-jsonData.log.length?HPLength-jsonData.log.length:option_hp_turn.length;
         $.each(jsonData.log, function (index, value) {
             LogCal(value);
             HitByFoe(value);
