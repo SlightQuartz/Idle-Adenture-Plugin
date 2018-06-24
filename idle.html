@@ -20,7 +20,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand">Idle plug-in v0.7</a>
+                <a class="navbar-brand" onclick = "AutoOffLine()">Idle plug-in v0.8</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
@@ -44,8 +44,7 @@
                         <button type="button" class="btn btn-danger btn-xs" onclick="location.reload();">Reset</button>
                     </div>
                     <div class="panel-body">
-                        项目地址：<a style="text-decoration:underline" href="https://github.com/SlightQuartz/Idle-Adenture-Plugin">GitHub</a>，求Star（更新也在github里)
-
+                        项目地址：<a style="text-decoration:underline" href="https://github.com/SlightQuartz/Idle-Adenture-Plugin" target="_blank">GitHub</a>，求Star
                     </div>
                     <ul class="list-group basicInfo">
                         <li class="list-group-item">Start time<span>null</span></li>
@@ -361,6 +360,9 @@
     </div>
     <div class="container">
         <div id="JsonCanvas"></div>
+    </div>
+    <div class="container">
+        <iframe id="bot" name = "bot">1</iframe>
     </div>
     <script src="js/jquery 1.12.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

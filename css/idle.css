@@ -42,3 +42,16 @@
 .container.active{
 	display:block;
 }
+.navbar-brand.danger{
+	color:red;
+}
+.navbar-brand.danger:hover{
+	color:red;
+}
+.container.danger{
+	display:block;
+}
+#bot{
+	width:100%;
+	height:30px;
+}

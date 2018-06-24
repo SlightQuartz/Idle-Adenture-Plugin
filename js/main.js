@@ -18,6 +18,9 @@ function Main(data) {
 	jsonData = JSON.parse($.base64.atob(data));
 	if (jsonData.log != null) {
 		ResetAll();
+		if (autoBot){
+			AutoBot();
+		}
     }
 }
 //*/
@@ -54,4 +57,34 @@ function MenuJson(data) {
     $(".container").removeClass("active");
     $(".container").eq(1).addClass("active");
     WriteLog_fightlog(data);
+}
+
+var autoBot = false;
+function AutoOffLine(){
+	if (autoBot){
+		autoBot = false;
+		$(".navbar-brand").removeClass("danger");
+		$("#bot").parents(".container").removeClass("danger");
+	}else{
+		autoBot = true;
+		$(".navbar-brand").addClass("danger");
+		$("#bot").parents(".container").addClass("danger");
+	}
+}
+
+var lastExp = 0;
+var autoRounds = 0;
+function AutoBot(){
+	if (jsonData.end.grpchara == null || jsonData.end.grpchara.Length<=0){
+		$("#bot")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/ClearEff.aspx";
+		lastExp = 0;
+		autoRounds = 0;
+	}
+	else{
+		autoRounds++;
+		lastExp = jsonData.geff.e;
+		if (autoRounds >= 20){
+			$("#bot")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/SetGuaJi.aspx?g=y";
+		}
+	}
 }
