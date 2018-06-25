@@ -97,7 +97,7 @@ var minExpIncrease = 15000;
 var maxRound = 20;
 var retryExp = true;
 function AutoBot(){
-    if ((retryExp && jsonData.end.grpchara == null) ||
+    if (((retryExp===true || retryExp==="true") && jsonData.end.grpchara == null) ||
         (jsonData.geff.e != lastExp/*不完全判断*/ && jsonData.geff.e - lastExp < minExpIncrease)) {
 		$(".bot iframe")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/ClearEff.aspx";
 		lastExp = 0;
@@ -153,7 +153,7 @@ function SetSettingData() {
     $("#bot_AutoRounds").attr("value",autoRounds);
     $("#bot_MinExpIncrease").attr("value",minExpIncrease);
     $("#bot_MaxRound").attr("value", maxRound);
-    if (retryExp) {
+    if (retryExp===true || retryExp ==="true") {
         $("#bot_retry")[0].checked = true;
     }
 }
