@@ -1,4 +1,5 @@
-﻿function HeroDate() {
+﻿var skillDataLength = 0;
+function HeroDate() {
     this.id = null;
     this.name = null;
     var skillGroup = [];
@@ -41,13 +42,19 @@
             //array[skillName,dmgA,aoeD,dotD,healA,aoeH,dotH,times]
             let exist = false;
             $(skillGroup).each(function () {
-                if (this.name == array[0]){
-                    if (array[1]>0){this.dmgA.push(array[1]);}
-                    if (array[2]>0){this.aoeD.push(array[2]);}
-                    if (array[3]>0){this.dotD.push(array[3]);}
-                    if (array[4]>0){this.healA.push(array[4]);}
-                    if (array[5]>0){this.aoeH.push(array[5]);}
-                    if (array[6]>0){this.dotH.push(array[6]);}
+                if (this.name == array[0]) {
+                    if (array[1] > 0) { this.dmgA.push(array[1]); }
+                    while (skillDataLength > 0 && this.dmgA.length > skillDataLength) { this.dmgA.shift(); }
+                    if (array[2] > 0) { this.aoeD.push(array[2]); }
+                    while (skillDataLength > 0 && this.aoeD.length > skillDataLength) { this.aoeD.shift(); }
+                    if (array[3] > 0) { this.dotD.push(array[3]); }
+                    while (skillDataLength > 0 && this.dotD.length > skillDataLength) { this.dotD.shift(); }
+                    if (array[4] > 0) { this.healA.push(array[4]); }
+                    while (skillDataLength > 0 && this.healA.length > skillDataLength) { this.healA.shift(); }
+                    if (array[5] > 0) { this.aoeH.push(array[5]); }
+                    while (skillDataLength > 0 && this.aoeH.length > skillDataLength) { this.aoeH.shift(); }
+                    if (array[6] > 0) { this.dotH.push(array[6]); }
+                    while (skillDataLength > 0 && this.dotH.length > skillDataLength) { this.dotH.shift(); }
                     this.times += Number(array[7]);
                     exist = true;
                     info.dmg += array[1] + array[2] + array[3];

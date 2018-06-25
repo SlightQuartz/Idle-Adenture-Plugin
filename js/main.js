@@ -60,31 +60,100 @@ function MenuJson(data) {
 }
 
 var autoBot = false;
-function AutoOffLine(){
-	if (autoBot){
-		autoBot = false;
-		$(".navbar-brand").removeClass("danger");
-		$("#bot").parents(".container").removeClass("danger");
-	}else{
-		autoBot = true;
-		$(".navbar-brand").addClass("danger");
-		$("#bot").parents(".container").addClass("danger");
-	}
+var urlValue = "http://localhost/dps/idle.html"
+function AutoOffLine() {
+    if (window.location.href.startsWith("file")) {
+        window.location.href = urlValue; 
+    } else {
+        if (autoBot) {
+            autoBot = false;
+            $(".navbar-brand").removeClass("danger");
+            $(".bot").removeClass("danger");
+        } else {
+            autoBot = true;
+            $(".navbar-brand").addClass("danger");
+            $(".bot").addClass("danger");
+        }
+    }
+}
+
+//Setting btn
+function MenuSetting() {
+    $(".navbar-collapse .navbar-nav>li").removeClass("active");
+    $(".navbar-collapse .navbar-nav>li").eq(2).addClass("active");
+    $(".container").removeClass("active");
+    $(".container").eq(2).addClass("active");
+    SetSettingData();
+}
+
+//Log btn
+function MenuLog() {
+
 }
 
 var lastExp = 0;
 var autoRounds = 0;
+var minExpIncrease = 15000;
+var maxRound = 20;
+var retryExp = true;
 function AutoBot(){
-	if (jsonData.end.grpchara == null || jsonData.end.grpchara.Length<=0){
-		$("#bot")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/ClearEff.aspx";
+    if ((retryExp && jsonData.end.grpchara == null) ||
+        (jsonData.geff.e != lastExp/*不完全判断*/ && jsonData.geff.e - lastExp < minExpIncrease)) {
+		$(".bot iframe")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/ClearEff.aspx";
 		lastExp = 0;
 		autoRounds = 0;
 	}
 	else{
 		autoRounds++;
 		lastExp = jsonData.geff.e;
-		if (autoRounds >= 20){
-			$("#bot")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/SetGuaJi.aspx?g=y";
+        if (autoRounds >= maxRound){
+            $(".bot iframe")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/SetGuaJi.aspx?g=y";
 		}
-	}
+    }
+    SetCookie();
+}
+    
+function SetCookie(){//7天有效
+    $.cookie('HPLength', HPLength, { expires: 7 });
+    $.cookie('skillDataLength', skillDataLength, { expires: 7 });
+    $.cookie('lastExp', lastExp, { expires: 7 });
+    $.cookie('autoRounds', autoRounds, { expires: 7 });
+    $.cookie('minExpIncrease', minExpIncrease, { expires: 7 });
+    $.cookie('maxRound', maxRound, { expires: 7 });
+    $.cookie('retryExp', retryExp, { expires: 7 });
+}
+
+function GetCookie() {
+    if ($.cookie('HPLength') != undefined) {
+        HPLength = $.cookie('HPLength');
+    }
+    if ($.cookie('skillDataLength') != undefined) {
+        skillDataLength = $.cookie('skillDataLength');
+    }
+    if ($.cookie('lastExp') != undefined) {
+        lastExp = $.cookie('lastExp');
+    }
+    if ($.cookie('autoRounds') != undefined) {
+        autoRounds = $.cookie('autoRounds');
+    }
+    if ($.cookie('minExpIncrease') != undefined) {
+        minExpIncrease = $.cookie('minExpIncrease');
+    }
+    if ($.cookie('maxRound') != undefined) {
+        maxRound = $.cookie('maxRound');
+    }
+    if ($.cookie('retryExp') != undefined) {
+        retryExp = $.cookie('retryExp');
+    }
+}
+
+function SetSettingData() {
+    $("#setting_hpDataLimited").attr("value",HPLength);
+    $("#setting_sKillDataLimimted").attr("value",skillDataLength);
+    $("#bot_AutoRounds").attr("value",autoRounds);
+    $("#bot_MinExpIncrease").attr("value",minExpIncrease);
+    $("#bot_MaxRound").attr("value", maxRound);
+    if (retryExp) {
+        $("#bot_retry")[0].checked = true;
+    }
 }
