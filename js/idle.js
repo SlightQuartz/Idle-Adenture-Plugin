@@ -4,9 +4,9 @@ var heroList = [];
 var heroIDList = [];
 
 $(document).ready(function () {
-    //Main();
     GetCookie();
     CheckVersion();
+    Main();
     basicInfo.startTime = new Date();
     $(".basicInfo li>span").eq(0).html([basicInfo.startTime.getFullYear(), basicInfo.startTime.getMonth() + 1, basicInfo.startTime.getDate()].join('-')
         + ' ' + [basicInfo.startTime.getHours(), basicInfo.startTime.getMinutes(), basicInfo.startTime.getSeconds()].join(':'));
@@ -61,7 +61,7 @@ function ResetCharacterID(callback) {
             let idx = value.idx;
             let nam = value.nam;
             $.each(heroList, function (index, value) {
-                console.log(heroList[index].name);
+                //console.log(heroList[index].name);
                 if (heroList[index].name == nam && indexList.indexOf(index) == -1) {
                     heroList[index].id = idx;
                     indexList.push(index);

@@ -1,17 +1,22 @@
 ﻿
+var setTimeoutValue = 30000;
+
 function Main() {
+    /*
 	content = $.ajax({url:"../fightlog.json",async:false});
     $.base64.utf8decode = true;
-    data = JSON.parse($.base64.atob(content.responseText));
-    if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
-        jsonData = data;
-        basicInfo.endTime = new Date();
-        ResetAll();
-		if (autoBot){
-			AutoBot();
-		}
-    }
-    //setTimeout("Main()", 10000); //读取频率
+    data = JSON.parse($.base64.atob(content.responseText));*/
+    $.getJSON("../fightlog.json", function (data) {
+        if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
+            jsonData = data;
+            basicInfo.endTime = new Date();
+            ResetAll();
+            if (autoBot) {
+                AutoBot();
+            }
+        }
+    });
+    setTimeout("Main()", setTimeoutValue); //读取频率
 }
 //
 
@@ -105,6 +110,7 @@ function AutoBot(){
 
 
 function SetCookie() {//7天有效
+    $.cookie('setTimeoutValue', setTimeoutValue, { expires: 7 });
     $.cookie('HPLength', HPLength, { expires: 7 });
     $.cookie('skillDataLength', skillDataLength, { expires: 7 });
     $.cookie('lastExp', lastExp, { expires: 7 });
@@ -115,6 +121,9 @@ function SetCookie() {//7天有效
 }
 
 function GetCookie() {
+    if ($.cookie('setTimeoutValue') != undefined) {
+        setTimeoutValue = $.cookie('setTimeoutValue');
+    }
     if ($.cookie('HPLength') != undefined) {
         HPLength = $.cookie('HPLength');
     }
@@ -139,8 +148,9 @@ function GetCookie() {
 }
 
 function SetSettingData() {
+    $("#setting_setTimeoutValue").attr("value", setTimeoutValue / 1000);
     $("#setting_hpDataLimited").attr("value",HPLength);
-    $("#setting_sKillDataLimimted").attr("value",skillDataLength);
+    $("#setting_skillDataLimimted").attr("value",skillDataLength);
     $("#bot_AutoRounds").attr("value",autoRounds);
     $("#bot_MinExpIncrease").attr("value",minExpIncrease);
     $("#bot_MaxRound").attr("value", maxRound);
