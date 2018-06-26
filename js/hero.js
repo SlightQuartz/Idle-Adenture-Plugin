@@ -129,7 +129,7 @@ function HeroDate() {
         },
         set: function (data) {
 			hp.push(Number(data));
-			if(hp.length > HPLength){
+			while(hp.length > HPLength){
 				hp.shift();
 			}
         }

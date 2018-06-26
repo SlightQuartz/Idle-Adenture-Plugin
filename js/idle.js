@@ -448,10 +448,10 @@ function HpTendency(data,turn) {
     });
     option_hp_skillName.push(data.att_combat.atn +"："+data.att_combat.ats);
     option_hp_turn.push(basicInfo.turns.length + "-" + (turn+1));
-	if(option_hp_skillName.length > HPLength){
+    while(option_hp_skillName.length > HPLength){
 		option_hp_skillName.shift();
 	}
-	if(option_hp_turn.length > HPLength){
+	while(option_hp_turn.length > HPLength){
 		option_hp_turn.shift();
 	}
 }
