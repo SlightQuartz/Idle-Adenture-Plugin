@@ -4,7 +4,6 @@ var heroList = [];
 var heroIDList = [];
 
 $(document).ready(function () {
-    GetCookie();
     //Main();
     basicInfo.startTime = new Date();
     $(".basicInfo li>span").eq(0).html([basicInfo.startTime.getFullYear(), basicInfo.startTime.getMonth() + 1, basicInfo.startTime.getDate()].join('-')
