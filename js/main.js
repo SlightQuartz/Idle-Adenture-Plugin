@@ -11,32 +11,9 @@ function Main() {
 			AutoBot();
 		}
     }
-	/*
-    $.get("../fightlog.txt").success(function (content) {
-		console.log(content);
-        $.base64.utf8decode = true;
-        data = JSON.parse($.base64.atob(content));
-        if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
-            jsonData = data;
-            basicInfo.endTime = new Date();
-            ResetAll();
-        }
-    });*/
     //setTimeout("Main()", 10000); //读取频率
 }
-//*/
-/*
-function Main(data) {
-	$.base64.utf8decode = true;
-	jsonData = JSON.parse($.base64.atob(data));
-	if (jsonData.log != null) {
-		ResetAll();
-		if (autoBot){
-			AutoBot();
-		}
-    }
-}
-//*/
+//
 
 // 输出data数据
 function WriteLog_fightlog(data) {
@@ -75,18 +52,14 @@ function MenuJson(data) {
 var autoBot = false;
 var urlValue = "http://localhost/dps/idle.html"
 function AutoOffLine() {
-    if (window.location.href.startsWith("file")) {
-        window.location.href = urlValue; 
+    if (autoBot) {
+        autoBot = false;
+        $(".navbar-brand").removeClass("danger");
+        $(".bot").removeClass("danger");
     } else {
-        if (autoBot) {
-            autoBot = false;
-            $(".navbar-brand").removeClass("danger");
-            $(".bot").removeClass("danger");
-        } else {
-            autoBot = true;
-            $(".navbar-brand").addClass("danger");
-            $(".bot").addClass("danger");
-        }
+        autoBot = true;
+        $(".navbar-brand").addClass("danger");
+        $(".bot").addClass("danger");
     }
 }
 
@@ -101,7 +74,11 @@ function MenuSetting() {
 
 //Log btn
 function MenuLog() {
-
+    $(".navbar-collapse .navbar-nav>li").removeClass("active");
+    $(".navbar-collapse .navbar-nav>li").eq(3).addClass("active");
+    $(".container").removeClass("active");
+    $(".container").eq(3).addClass("active");
+    UpdateLog();
 }
 
 var lastExp = 0;
@@ -123,8 +100,44 @@ function AutoBot(){
             $(".bot iframe")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/SetGuaJi.aspx?g=y";
 		}
     }
+    SetCookie();
 }
-    
+
+
+function SetCookie() {//7天有效
+    $.cookie('HPLength', HPLength, { expires: 7 });
+    $.cookie('skillDataLength', skillDataLength, { expires: 7 });
+    $.cookie('lastExp', lastExp, { expires: 7 });
+    $.cookie('autoRounds', autoRounds, { expires: 7 });
+    $.cookie('minExpIncrease', minExpIncrease, { expires: 7 });
+    $.cookie('maxRound', maxRound, { expires: 7 });
+    $.cookie('retryExp', retryExp, { expires: 7 });
+}
+
+function GetCookie() {
+    if ($.cookie('HPLength') != undefined) {
+        HPLength = $.cookie('HPLength');
+    }
+    if ($.cookie('skillDataLength') != undefined) {
+        skillDataLength = $.cookie('skillDataLength');
+    }
+    if ($.cookie('lastExp') != undefined) {
+        lastExp = $.cookie('lastExp');
+    }
+    if ($.cookie('autoRounds') != undefined) {
+        autoRounds = $.cookie('autoRounds');
+    }
+    if ($.cookie('minExpIncrease') != undefined) {
+        minExpIncrease = $.cookie('minExpIncrease');
+    }
+    if ($.cookie('maxRound') != undefined) {
+        maxRound = $.cookie('maxRound');
+    }
+    if ($.cookie('retryExp') != undefined) {
+        retryExp = $.cookie('retryExp');
+    }
+}
+
 function SetSettingData() {
     $("#setting_hpDataLimited").attr("value",HPLength);
     $("#setting_sKillDataLimimted").attr("value",skillDataLength);
