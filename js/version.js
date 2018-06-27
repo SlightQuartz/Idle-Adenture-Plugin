@@ -8,7 +8,7 @@ function CheckVersion() {
     }
 }
 function UpdateLog() {
-    updatelog = $.get("http://raw.githack.com/SlightQuartz/Idle-Adenture-Plugin/" + newVersionID + "/README.md", function () {
+    updatelog = $.get("http://raw.githack.com/SlightQuartz/Idle-Adenture-Plugin/" + versionLogID + "/README.md", function () {
         $("#updateLog").html(marked(updatelog.responseText));
     });
 }

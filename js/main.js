@@ -7,14 +7,16 @@ function Main() {
     $.base64.utf8decode = true;
     data = JSON.parse($.base64.atob(content.responseText));*/
     $.getJSON("../fightlog.json", function (data) {
-        if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
-            jsonData = data;
-            basicInfo.endTime = new Date();
-            ResetAll();
-            if (autoBot) {
-                AutoBot();
-            }
-        }
+		if (data.log != null){
+			if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
+				jsonData = data;
+				basicInfo.endTime = new Date();
+				ResetAll();
+				if (autoBot) {
+					AutoBot();
+				}
+			}
+		}
     });
     setTimeout("Main()", setTimeoutValue); //读取频率
 }
@@ -148,12 +150,12 @@ function GetCookie() {
 }
 
 function SetSettingData() {
-    $("#setting_setTimeoutValue").attr("value", setTimeoutValue / 1000);
-    $("#setting_hpDataLimited").attr("value",HPLength);
-    $("#setting_skillDataLimimted").attr("value",skillDataLength);
-    $("#bot_AutoRounds").attr("value",autoRounds);
-    $("#bot_MinExpIncrease").attr("value",minExpIncrease);
-    $("#bot_MaxRound").attr("value", maxRound);
+    $("#setting_setTimeoutValue").val(setTimeoutValue / 1000);
+    $("#setting_hpDataLimited").val(HPLength);
+    $("#setting_skillDataLimimted").val(skillDataLength);
+    $("#bot_AutoRounds").val(autoRounds);
+    $("#bot_MinExpIncrease").val(minExpIncrease);
+    $("#bot_MaxRound").val(maxRound);
     if (retryExp===true || retryExp ==="true") {
         $("#bot_retry")[0].checked = true;
     }
