@@ -82,7 +82,22 @@
 /// <param name="goldValue">金钱数值</param>
 function SetExpChart(expValue, goldValue) {
     option_exp.xAxis.data.push(option_exp.xAxis.data.length);
+    if (option_exp.series[0].data.length > option_exp.series[1].data.length) {
+        option_exp.series[0].data.pop();
+    }
     option_exp.series[0].data.push(expValue);
+    if (autoBot) {
+        var battleTurns = 0;
+        var restTurns = 0;
+        for (var i = 1; i <= autoRounds; i++) {
+            battleTurns += basicInfo.turns[basicInfo.turns.length - i];
+            restTurns += basicInfo.rest[basicInfo.rest.length - i];
+        }
+        option_exp.series[0].data.push(Math.round(1800 * (basicInfo.exp / autoRounds) / ((battleTurns + restTurns) / autoRounds + 1) * (autoRounds > 20 ? 20 : autoRounds / 20)));
+    }
+    if (option_exp.xAxis.data.length < option_exp.series[0].data.length) {
+        option_exp.xAxis.data.push(option_exp.xAxis.data.length);
+    }
     option_exp.series[1].data.push(goldValue);
     Echart_build(option_exp, $("#expChart"));
 }

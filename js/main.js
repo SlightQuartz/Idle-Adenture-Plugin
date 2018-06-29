@@ -10,8 +10,9 @@ function Main() {
 		if (data.log != null){
 			if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
 				jsonData = data;
-				basicInfo.endTime = new Date();
-				ResetAll();
+                basicInfo.endTime = new Date();
+                autoRounds++;
+                ResetAll();
 				if (autoBot) {
 					AutoBot();
 				}
@@ -101,7 +102,6 @@ function AutoBot(){
 		autoRounds = 0;
 	}
 	else{
-		autoRounds++;
 		lastExp = jsonData.geff.e;
         if (autoRounds >= maxRound){
             $(".bot iframe")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/SetGuaJi.aspx?g=y";
