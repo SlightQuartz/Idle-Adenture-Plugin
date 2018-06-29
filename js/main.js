@@ -90,6 +90,7 @@ function MenuLog() {
 }
 
 var lastExp = 0;
+var lastRetryExp = 0;
 var autoRounds = 0;
 var minExpIncrease = 15000;
 var maxRound = 20;
@@ -98,7 +99,8 @@ function AutoBot(){
     if (((retryExp===true || retryExp==="true") && jsonData.end.grpchara == null) ||
         (jsonData.geff.e != lastExp/*不完全判断*/ && jsonData.geff.e - lastExp < minExpIncrease)) {
 		$(".bot iframe")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/ClearEff.aspx";
-		lastExp = 0;
+        lastExp = 0;
+        lastRetryExp = basicInfo.exp;
 		autoRounds = 0;
 	}
 	else{
@@ -116,6 +118,7 @@ function SetCookie() {//7天有效
     $.cookie('HPLength', HPLength, { expires: 7 });
     $.cookie('skillDataLength', skillDataLength, { expires: 7 });
     $.cookie('lastExp', lastExp, { expires: 7 });
+    $.cookie('lastRetryExp', lastRetryExp, { expires: 7 });
     $.cookie('autoRounds', autoRounds, { expires: 7 });
     $.cookie('minExpIncrease', minExpIncrease, { expires: 7 });
     $.cookie('maxRound', maxRound, { expires: 7 });
@@ -134,6 +137,9 @@ function GetCookie() {
     }
     if ($.cookie('lastExp') != undefined) {
         lastExp = $.cookie('lastExp');
+    }
+    if ($.cookie('lastRetryExp') != undefined) {
+        lastRetryExp = $.cookie('lastRetryExp');
     }
     if ($.cookie('autoRounds') != undefined) {
         autoRounds = $.cookie('autoRounds');

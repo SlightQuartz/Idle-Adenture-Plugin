@@ -93,7 +93,7 @@ function SetExpChart(expValue, goldValue) {
             battleTurns += basicInfo.turns[basicInfo.turns.length - i];
             restTurns += basicInfo.rest[basicInfo.rest.length - i];
         }
-        option_exp.series[0].data.push(Math.round(1800 * (basicInfo.exp / autoRounds) / ((battleTurns + restTurns) / autoRounds + 1) * (autoRounds > 20 ? 20 : autoRounds / 20)));
+        option_exp.series[0].data.push(Math.round(1800 * ((basicInfo.exp - lastRetryExp) / autoRounds) / ((battleTurns + restTurns) / autoRounds + 1) * (autoRounds > 20 ? 20 : autoRounds / 20)));
     }
     if (option_exp.xAxis.data.length < option_exp.series[0].data.length) {
         option_exp.xAxis.data.push(option_exp.xAxis.data.length);
