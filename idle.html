@@ -43,7 +43,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Basic Info
-                        <button type="button" class="btn btn-danger btn-xs" onclick="location.reload();">Reset</button>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="Btn_Reset();">Reset</button>
                     </div>
                     <div class="panel-body">
                         项目地址：<a style="text-decoration:underline" href="https://github.com/SlightQuartz/Idle-Adenture-Plugin" target="_blank">GitHub</a>，求Star
@@ -433,6 +433,16 @@
                                     <div class="checkbox">
                                         <label>
                                             <input id="bot_retry" type="checkbox" onchange="retryExp = $(this).is(':checked'); SetCookie();">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="col-sm-4 control-label">Retry link to Reset</label>
+                                <div class="col-sm-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="bot_resetLink" type="checkbox" onchange="resetLink = $(this).is(':checked'); SetCookie();">
                                         </label>
                                     </div>
                                 </div>

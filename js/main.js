@@ -71,6 +71,18 @@ function AutoOffLine() {
     }
 }
 
+function Btn_Reset() {
+    if (autoBot && resetLink)
+    {
+        $(".bot iframe")[0].contentWindow.location.href = "http://idlesteam.marrla.com/API/Group/ClearEff.aspx";
+        lastExp = 0;
+        lastRetryExp = basicInfo.exp;
+        autoRounds = 0;
+        SetCookie();
+    }
+    location.reload();
+}
+
 //Setting btn
 function MenuSetting() {
     $(".navbar-collapse .navbar-nav>li").removeClass("active");
@@ -95,6 +107,7 @@ var autoRounds = 0;
 var minExpIncrease = 15000;
 var maxRound = 20;
 var retryExp = true;
+var resetLink = false;
 function AutoBot(){
     if (((retryExp===true || retryExp==="true") && jsonData.end.grpchara == null) ||
         (jsonData.geff.e != lastExp/*不完全判断*/ && jsonData.geff.e - lastExp < minExpIncrease)) {
@@ -123,6 +136,7 @@ function SetCookie() {//7天有效
     $.cookie('minExpIncrease', minExpIncrease, { expires: 7 });
     $.cookie('maxRound', maxRound, { expires: 7 });
     $.cookie('retryExp', retryExp, { expires: 7 });
+    $.cookie('resetLink', resetLink, { expires: 7 });
 }
 
 function GetCookie() {
@@ -153,6 +167,9 @@ function GetCookie() {
     if ($.cookie('retryExp') != undefined) {
         retryExp = $.cookie('retryExp');
     }
+    if ($.cookie('bot_resetLink') != undefined) {
+        resetLink = $.cookie('bot_resetLink');
+    }
 }
 
 function SetSettingData() {
@@ -164,5 +181,8 @@ function SetSettingData() {
     $("#bot_MaxRound").val(maxRound);
     if (retryExp===true || retryExp ==="true") {
         $("#bot_retry")[0].checked = true;
+    }
+    if (resetLink === true || resetLink === "true") {
+        $("#bot_resetLink")[0].checked = true;
     }
 }
