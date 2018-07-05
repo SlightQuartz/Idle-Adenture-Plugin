@@ -1,2 +1,2 @@
-var newVersionID = "v0.8.2";
+var newVersionID = "v0.8.3";
 var versionLogID = "v0.8";
