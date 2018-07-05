@@ -2,10 +2,6 @@
 var setTimeoutValue = 30000;
 
 function Main() {
-    /*
-	content = $.ajax({url:"../fightlog.json",async:false});
-    $.base64.utf8decode = true;
-    data = JSON.parse($.base64.atob(content.responseText));*/
     $.getJSON("../fightlog.json", function (data) {
 		if (data.log != null){
 			if (jsonData == null || jsonData.log.length != data.log.length || jsonData.geff.e != data.geff.e || jsonData.geff.g != data.geff.g) {
@@ -58,7 +54,6 @@ function MenuJson(data) {
 }
 
 var autoBot = false;
-var urlValue = "http://localhost/dps/idle.html"
 function AutoOffLine() {
     if (autoBot) {
         autoBot = false;
@@ -72,14 +67,6 @@ function AutoOffLine() {
 }
 
 function Btn_Reset() {
-    if (autoBot && resetLink)
-    {
-        $(".bot iframe")[0].contentWindow.location.href = "http://idlesteam.marrla.com/API/Group/ClearEff.aspx";
-        lastExp = 0;
-        lastRetryExp = basicInfo.exp;
-        autoRounds = 0;
-        SetCookie();
-    }
     location.reload();
 }
 
@@ -101,23 +88,19 @@ function MenuLog() {
     UpdateLog();
 }
 
-var lastExp = 0;
 var lastRetryExp = 0;
 var autoRounds = 0;
 var minExpIncrease = 15000;
 var maxRound = 20;
 var retryExp = true;
-var resetLink = false;
 function AutoBot(){
     if (((retryExp===true || retryExp==="true") && jsonData.end.grpchara == null) ||
-        (jsonData.geff.e != lastExp/*不完全判断*/ && jsonData.geff.e - lastExp < minExpIncrease)) {
+        (option_exp.series[0].data[option_exp.series[0].data.length-1] - option_exp.series[0].data[option_exp.series[0].data.length-2] < minExpIncrease)) {
 		$(".bot iframe")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/ClearEff.aspx";
-        lastExp = 0;
         lastRetryExp = basicInfo.exp;
-		autoRounds = 0;
+        autoRounds = 0;
 	}
 	else{
-		lastExp = jsonData.geff.e;
         if (autoRounds >= maxRound){
             $(".bot iframe")[0].contentWindow.location.href="http://idlesteam.marrla.com/API/Group/SetGuaJi.aspx?g=y";
 		}
@@ -130,13 +113,11 @@ function SetCookie() {//7天有效
     $.cookie('setTimeoutValue', setTimeoutValue, { expires: 7 });
     $.cookie('HPLength', HPLength, { expires: 7 });
     $.cookie('skillDataLength', skillDataLength, { expires: 7 });
-    $.cookie('lastExp', lastExp, { expires: 7 });
     $.cookie('lastRetryExp', lastRetryExp, { expires: 7 });
     $.cookie('autoRounds', autoRounds, { expires: 7 });
     $.cookie('minExpIncrease', minExpIncrease, { expires: 7 });
     $.cookie('maxRound', maxRound, { expires: 7 });
     $.cookie('retryExp', retryExp, { expires: 7 });
-    $.cookie('resetLink', resetLink, { expires: 7 });
 }
 
 function GetCookie() {
@@ -149,9 +130,7 @@ function GetCookie() {
     if ($.cookie('skillDataLength') != undefined) {
         skillDataLength = $.cookie('skillDataLength');
     }
-    if ($.cookie('lastExp') != undefined) {
-        lastExp = $.cookie('lastExp');
-    }
+
     if ($.cookie('lastRetryExp') != undefined) {
         lastRetryExp = $.cookie('lastRetryExp');
     }
@@ -167,9 +146,6 @@ function GetCookie() {
     if ($.cookie('retryExp') != undefined) {
         retryExp = $.cookie('retryExp');
     }
-    if ($.cookie('bot_resetLink') != undefined) {
-        resetLink = $.cookie('bot_resetLink');
-    }
 }
 
 function SetSettingData() {
@@ -181,8 +157,5 @@ function SetSettingData() {
     $("#bot_MaxRound").val(maxRound);
     if (retryExp===true || retryExp ==="true") {
         $("#bot_retry")[0].checked = true;
-    }
-    if (resetLink === true || resetLink === "true") {
-        $("#bot_resetLink")[0].checked = true;
     }
 }
