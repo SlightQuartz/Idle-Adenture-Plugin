@@ -49,11 +49,11 @@
 	color:red;
 }
 .bot {
-    display: none;
+    display: none !important;
 }
-.bot.danger {
-    display: block;
-}
+    .bot.danger {
+        display: block !important;
+    }
 .bot iframe{
 	width:100%;
 	height:0px;
