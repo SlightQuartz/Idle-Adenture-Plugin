@@ -161,7 +161,7 @@ function SetSettingData() {
 }
 
 function AutoDungeon() {
-    var did = [9,10,11,12,13,14,15,16,7,5,1,2,3,4,17,18];
+    var did = [9,10,11,12,13,14,15,16,7,5,1,2,3,4,17,18,19,20];
     if (autoBot) {
         $.each(did, function (index, value) {
             //setTimeout('$(".bot iframe")[0].contentWindow.location.href = "http://idlesteam.marrla.com/DungeonFight.aspx?did=-' + did[index] + '"', index * 5000);
