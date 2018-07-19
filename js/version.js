@@ -1,4 +1,4 @@
-﻿var VersionID = "v0.8.6"
+﻿var VersionID = "v0.87"
 var updatelog;
 function CheckVersion() {
     $("#versionID").html(VersionID);

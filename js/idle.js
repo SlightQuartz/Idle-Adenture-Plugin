@@ -125,7 +125,7 @@ function LogCal(logData) {
         SkillGroup(logData.aidx, logData.att_combat.ats, Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/, Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH, 0, 0, logData.att_combat.atc > 1 ? logData.att_combat.atc : 1);
     }
     //敌方回合
-    if (heroIDList.indexOf(Number(logData.didx)) >= 0) {
+    if (heroIDList.indexOf(Number(logData.aidx)) < 0) {
         if (Number(logData.att_combat.ct) > 0) {
             for (var i = 0; i < logData.att_combat.cnt; i++) {
                 SkillGroup(logData.didx, "反击", Math.round(Number(logData.att_combat.ct) / logData.att_combat.cnt), 0, 0, 0, 0, 0, logData.att_combat.cnt);
@@ -207,6 +207,29 @@ function LogCal(logData) {
                 }
             });
         }
+        //灵魂操控
+        if (logData.att_status != null) {
+            $(logData.att_status).each(function () {
+                if (this.skn == "灵魂操纵" && heroIDList.indexOf(Number(logData.att_combat.didx)) < 0) {
+                    var ShacklesUserList = FindSkillUser(logData, "灵魂操纵");
+                    if (ShacklesUserList.length > 0) {
+                        if (heroIDList.indexOf(Number(logData.att_combat.didx)) < 0) {
+                            var aoeD = 0;
+                            var aoeH = 0;
+                            $(logData.aoe_combat).each(function () {
+                                if (this.d != null) { aoeD += Number(this.d); }
+                                if (this.Heal != null) { aoeH += Number(this.Heal); }
+                            });
+                            SkillGroup(ShacklesUserList[0][0], "灵魂操纵-成功", Number(logData.att_combat.d)/*伤害*/ + Number(logData.att_combat.hpf)/*吸血*/, Number(logData.att_combat.Heal) + Number(logData.att_combat.hpf)/*吸血*/ + Number(logData.att_combat.phe)/*被动吸血*/, aoeD, aoeH, 0, 0, 1);
+                        }
+                        else {
+                            SkillGroup(ShacklesUserList[0][0], "灵魂操纵-失败", 0, 0, 0, 0, 0, 0, 1);
+                        }
+                    }
+                } 
+            });
+        }
+
         //无来源伤害 魅毒、创伤
     }
 }
