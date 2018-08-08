@@ -111,6 +111,25 @@ function LogCal(logData) {
             var roundD = 0;
             var roundH = 0;
             if (this.dmg != null) { roundD += Number(this.dmg) }
+            if (this.dmga != null) { 
+				var temp_num = 0;
+				$(logData.all_chara).each(function () {
+					if (heroIDList.indexOf(Number(this.cid)) < 0){
+						var tempID = this.cid;
+						var isDead = false;
+						$(logData.dead).each(function () {
+							if (Number(this.idx) == Number(tempID)){
+								isDead = true;
+								return true;
+							}
+						});
+						if (!isDead){
+							temp_num++;
+						}
+					}
+				});
+				roundD += Number(this.dmga * temp_num);
+			}
             if (this.dyd != null) { roundD += Number(this.dyd) * logData.att_round.length }//改变
             if (this.heal != null) { roundH += Number(this.heal) }
             SkillGroup(logData.aidx, this.skn, 0, 0, 0, 0, roundD, roundH,0);
